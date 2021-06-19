@@ -1,3 +1,5 @@
 config.py
 *.docx
-MDAV_app.py
+analysed_omdb_movies_data.csv
+movies_data.csv
+omdb_movies_data.csv
