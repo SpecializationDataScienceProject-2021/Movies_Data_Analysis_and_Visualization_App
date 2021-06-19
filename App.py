@@ -1050,14 +1050,14 @@ def Visualizations():
 if story_select == 'Visualizations':
     Visualizations()
     
-hide_streamlit_style = """
-<style>
-#MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
-</style>
+# hide_streamlit_style = """
+# <style>
+# #MainMenu {visibility: hidden;}
+# footer {visibility: hidden;}
+# </style>
 
-"""
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+# """
+# st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 st.sidebar.markdown('''
 <small>Created by [M.Lakshmi Madhuri, T.Phaneendhar, A.Akhil, A.Sailaja, A.Vamsi Krishna, Y.Swapnith]
