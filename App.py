@@ -50,7 +50,7 @@ story_select = st.sidebar.selectbox(
 
 def Analysis():
     st.markdown("""### Analysis of **Movies** data""")
-    movies_omdb = pd.read_csv(omdburl, compression='zip', low_memory=False)
+    movies_omdb = pd.read_csv(moviesdataurl, compression='zip', low_memory=False)
 
     st.markdown("""The **first** five rows data:""")
     st.write(movies_omdb.head(5))
@@ -710,54 +710,6 @@ def MDAV_options():
         except Exception as e:
             print(e)
 
-    def StripPlots_based_on_Year():
-        try:
-            st.info("""We have visualized **StripPlots** between **Year** and some of the attributes like **Ratings, Votes, Budget, Collections, Profit, 
-            and, Popularity**. For these attributes we have fixed some limits which are **Ratings > 6**, **Votes > 500**, **Budget, Collections, Profit > 10000**
-            and **Popularity > 0**. In these plots we can observe the **Adequate increase** of values for each atrribute in each year starting from 2000s. To 
-            observe more do explore all options""")
-            story_select = st.selectbox(
-            label = "Try all options",
-            options = ['Select','Votes', 'Ratings','Budget', 'Collections', 'Profit', 'Popularity'])
-            if story_select == 'Ratings':
-                df25 = df[df['Year'] > 1999]
-                df25 = df25[df25['Year'] < 2022]
-                df25 = df25.loc[df25["Rating"] > 6]
-                fig = px.strip(df25, x="Year", y="Rating", orientation="h", color="Year", title="Strip plots based on year and Rating")
-                st.plotly_chart(fig)
-            if story_select == 'Votes' or 'Select':
-                df25 = df[df['Year'] > 1999]
-                df25 = df25[df25['Year'] < 2022]
-                df25 = df25.loc[df25["Votes"] > 500.0]
-                fig = px.strip(df25, x="Year", y="Votes", orientation="h", color="Year", title="Strip plots based on year and Votes")
-                st.plotly_chart(fig)
-            if story_select == 'Budget':
-                df25 = df[df['Year'] > 1999]
-                df25 = df25[df25['Year'] < 2022]
-                df25 = df25.loc[df25["Budget"] > 10000]
-                fig = px.strip(df25, x="Year", y="Budget", orientation="h", color="Year", title="Strip plots based on year and Budget", hover_name="Title")
-                st.plotly_chart(fig)
-            if story_select == 'Collections':
-                df25 = df[df['Year'] > 1999]
-                df25 = df25[df25['Year'] < 2022]
-                df25 = df25.loc[df25["Collections"] > 10000]
-                fig = px.strip(df25, x="Year", y="Collections", color="Year", hover_name="Title", title="Strip plots based on year and Collections")
-                st.plotly_chart(fig)
-            if story_select == 'Profit':
-                df25 = df[df['Year'] > 1999]
-                df25 = df25[df25['Year'] < 2022]
-                df25 = df25.loc[df25["Profit"] > 10000]
-                fig = px.strip(df25, x="Year", y="Profit", color="Year", hover_name="Title", title="Strip plots based on year and Profit")
-                st.plotly_chart(fig)
-            if story_select == 'Popularity':
-                df25 = df[df['Year'] > 1999]
-                df25 = df25[df25['Year'] < 2022]
-                df25 = df25.loc[df25["Popularity"] > 0]
-                fig = px.strip(df25, x="Year", y="Popularity", color="Year", hover_name="Title", title="Strip plots based on year and Popularity")
-                st.plotly_chart(fig)
-        except Exception as e:
-            print(e)
-
     def Top10_longestandpopular_movies():
         try:
             st.info("""We have visualized The Top 10 longest movies based on **Duration** and Popular movies based on **Popularity**. 
@@ -1047,9 +999,6 @@ def MDAV_options():
     if story_select == 'Genres100_of_2000s_movies':
         Genres100_of_2000s_movies()
 
-    if story_select == 'StripPlots_based_on_Year':
-        StripPlots_based_on_Year()
-
     if story_select == 'Top10_longestandpopular_movies':
         Top10_longestandpopular_movies()
 
@@ -1086,7 +1035,6 @@ def MDAV_options():
         PieChart_noof_movies_by_Year()
         Word_visualizations()
         Genres100_of_2000s_movies()
-        StripPlots_based_on_Year()
         Top10_longestandpopular_movies()
         Statistical_BoxOffice_by_Years()
         Duration_distribuion()
