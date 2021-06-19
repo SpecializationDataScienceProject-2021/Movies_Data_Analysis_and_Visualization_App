@@ -50,7 +50,7 @@ story_select = st.sidebar.selectbox(
 
 def Analysis():
     st.markdown("""### Analysis of **Movies** data""")
-    movies_omdb = pd.read_csv(moviesdataurl, compression='zip', low_memory=False)
+    movies_omdb = pd.read_csv(omdburl, compression='zip', low_memory=False)
 
     st.markdown("""The **first** five rows data:""")
     st.write(movies_omdb.head(5))
