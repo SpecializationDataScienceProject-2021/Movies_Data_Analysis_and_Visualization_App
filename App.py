@@ -15,7 +15,7 @@ import plotly.figure_factory as ff
 from PIL import Image
 
 import warnings
-import pymongo  
+ 
 icon = Image.open('icon9.jpg')
 st.set_page_config(initial_sidebar_state="collapsed", page_title = "MDAV", page_icon = icon)
 
