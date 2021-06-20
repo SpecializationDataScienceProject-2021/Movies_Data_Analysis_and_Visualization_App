@@ -66,27 +66,19 @@ def Analysis():
     st.set_option('deprecation.showPyplotGlobalUse', False)
     st.write('For **Released** attribute I have changed the datatype to datetime also got other data attributes like **Month, Monthname, Day, Weekday**')
     movies_omdb['Released']=pd.to_datetime(movies_omdb['Released'])
-    rl1, rl2 = st.beta_columns((2,2))
-    rl1.write(movies_omdb['Released'].head())
     rdate = pd.DataFrame()
     rdate['Month'] = movies_omdb['Released'].dt.month 
     rdate['Monthname']= movies_omdb['Released'].dt.strftime("%B")
     rdate['Day'] = movies_omdb['Released'].dt.day
     rdate['Weekday']= movies_omdb['Released'].dt.day_name()
-    rl2.write(rdate.head())
     movies_omdb = movies_omdb.join(rdate)
 
     st.write('For **Runtime** attribute I have changed the format and changed the column name to **Duration**')
-    r1, r2 = st.beta_columns(2)
-    r_before = movies_omdb[['IMDB ID', 'Title', 'Runtime']]
-    r1.write(r_before.head(5))
     df2 = movies_omdb['Runtime'].str.split(n=1, expand=True)
     df2.columns = ['Runtime{}'.format(x+1) for x in df2.columns]
     df2 = df2.rename(columns={'Runtime1':"Duration"})
     df2 = df2.drop(columns = ['Runtime2'])
     movies_omdb = movies_omdb.join(df2)
-    r_after = movies_omdb[['IMDB ID', 'Title', 'Duration']]
-    r2.write(r_after.head(5))
     movies_omdb = movies_omdb.drop(columns = ['Runtime'])
     st.write('Dropped some of unwanted columns like **Rated, Writer, DVD, Plot, Website, Response, Metascore, Ratings, Type, Awards**')
     movies_omdb = movies_omdb.drop(columns=['Rated','Writer','DVD','Plot','Website','Response', 'Metascore', 'Ratings', 'Type', 'Awards'])
