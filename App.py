@@ -51,15 +51,16 @@ story_select = st.sidebar.selectbox(
 def Analysis():
     st.markdown("""### Analysis of **Movies** data""")
     movies_omdb = pd.read_csv(omdburl, compression='zip', low_memory=False)
+    movies_d = pd.read_csv(moviesdataurl, compression='zip', low_memory=False)
     st.markdown("""The **DataTypes** of the omdb_movies_data.csv""")
     d1, d2 = st.beta_columns((2,3))
-    d1.write(movies_omdb.dtypes)
+    d1.write(movies_d.dtypes)
     d2.write('The shape of the omdb_movies_data.csv data with duplicates: ')
     d2.write(movies_omdb.shape)
     movies_omdb = movies_omdb.drop_duplicates()
     d2.write('The shape of the omdb_movies_data.csv data after removing duplicates: ')
     d2.write(movies_omdb.shape)
-    d2.write('The columns: Title, Year, Rated, Realeased, Runtime, Genre, Director, Writer, Actors, Plot, Language, Country, Awards, Poster, Ratings, Metascore, imdbRating, imdbVotes, imdbID, Type, DVD, BoxOffice, Production, Website, Response, Duration')
+    d2.write('The columns: Title, Year, Realeased, Genre, Director, Actors, Language, Country, Poster, Rating, Votes, IMDB ID, Production, Day, Weekday, Duration, MonthName, Budget, Popularity, Collections, Profit')
 
     movies_omdb = movies_omdb.rename(columns={'imdbID':'IMDB ID','imdbRating':'Rating','imdbVotes':'Votes'})
     
