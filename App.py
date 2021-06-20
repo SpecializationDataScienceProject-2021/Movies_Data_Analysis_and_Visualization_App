@@ -52,7 +52,7 @@ def Analysis():
     st.markdown("""### Analysis of **Movies** data""")
     movies_omdb = pd.read_csv(omdburl, compression='zip', low_memory=False)
     movies_d = pd.read_csv(moviesdataurl, compression='zip', low_memory=False)
-    st.markdown("""The **DataTypes** of the omdb_movies_data.csv""")
+    st.markdown("""The **DataTypes**""")
     d1, d2 = st.beta_columns((2,3))
     d1.write(movies_d.dtypes)
     d2.write('The shape of the omdb_movies_data.csv data with duplicates: ')
@@ -219,10 +219,12 @@ def Analysis():
 
     st.write('**Statistical** data after data cleaning')
     st.write(movies_data.describe())
-    
+
+# displayed analysis part by clicking option
 if story_select == 'Analysis':
     Analysis()
 
+# Application options
 def MDAV_options():
     option = st.sidebar.radio('Visualization options', ['Worldwide', 'Indian', 'USA'])
     movies_data = pd.read_csv(moviesdataurl, compression = 'zip', low_memory=False) 
@@ -250,13 +252,18 @@ def MDAV_options():
 
     def Top_10_geners():
         try:
+            st.success("""**Data:** Year, Genre
+            **Why:** to show the change over time so we selected **linePlot**""")
+
             st.info("""We have visualized Between **Year** and top **Genres** count from 1990 to 2021 According 
             to the visualization for **WorldWide** movies the **Documentary** is more. Whereas for **Indian** movies 
             **Drama** is more and for **USA** movies the **Documentary** and **Drama** are equally overlaped at each 
             other point""")
-            df_genres_sub = df[df['Year'] > 1990]
-            df_genres_sub = df_genres_sub[df_genres_sub['Year'] < 2021]
-            df_genres_sub.head()
+
+            slider_range_year = st.slider("Select the range of year", 1990, 2021 , (1990, 2021))
+            df_genres_sub = df[df['Year'] > slider_range_year[0]]
+            df_genres_sub = df_genres_sub[df_genres_sub['Year'] < slider_range_year[1]]
+
             df_series = (df_genres_sub.groupby(['Genre', 'Year']).size())
             df_series = df_series.unstack(level=0)
             df_series['sum'] = df_series.sum(axis = 1)
