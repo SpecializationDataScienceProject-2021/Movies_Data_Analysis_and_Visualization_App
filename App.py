@@ -51,11 +51,6 @@ story_select = st.sidebar.selectbox(
 def Analysis():
     st.markdown("""### Analysis of **Movies** data""")
     movies_omdb = pd.read_csv(omdburl, compression='zip', low_memory=False)
-
-    st.markdown("""The **first** five rows data:""")
-    st.write(movies_omdb.head(5))
-    st.markdown("""The **last** five rows data:""")
-    st.write(movies_omdb.tail(5))
     st.markdown("""The **DataTypes** of the omdb_movies_data.csv""")
     d1, d2 = st.beta_columns((2,3))
     d1.write(movies_omdb.dtypes)
@@ -93,7 +88,6 @@ def Analysis():
     r_after = movies_omdb[['IMDB ID', 'Title', 'Duration']]
     r2.write(r_after.head(5))
     movies_omdb = movies_omdb.drop(columns = ['Runtime'])
-    st.write(movies_omdb.head(5))
     st.write('Dropped some of unwanted columns like **Rated, Writer, DVD, Plot, Website, Response, Metascore, Ratings, Type, Awards**')
     movies_omdb = movies_omdb.drop(columns=['Rated','Writer','DVD','Plot','Website','Response', 'Metascore', 'Ratings', 'Type', 'Awards'])
 
@@ -182,9 +176,6 @@ def Analysis():
     df = df3.merge(df5, on='Title', how="left")
     df = df.merge(df7, on='IMDB ID', how="left")
 
-    df_c = df.loc[df['Revenue'] > 0]
-    st.write(df_c.head())
-
     st.write('**Inflation rate** converting **USD** to **INR** and also added **Profit** Column for visualization purpose')
     # getting the conversion value of usd to inr
     url = 'https://api.exchangerate-api.com/v4/latest/USD'
@@ -227,6 +218,11 @@ def Analysis():
     m3.write(df.isnull().sum())
 
     movies_data = pd.read_csv(moviesdataurl, compression = 'zip', low_memory=False) 
+
+    st.markdown("""The **first** five rows data:""")
+    st.write(movies_data.head(5))
+    st.markdown("""The **last** five rows data:""")
+    st.write(movies_data.tail(5))
 
     st.write('**Statistical** data after data cleaning')
     st.write(movies_data.describe())
