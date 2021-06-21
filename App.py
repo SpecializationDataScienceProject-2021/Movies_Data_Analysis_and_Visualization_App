@@ -246,8 +246,7 @@ def MDAV_options():
     label = "Select the story to visualise",
     options = ['Select','Numberof_Movies_by_gcl', 'Year_vs_Movies', 'Max_BoxOffice_Movies_each_Year', 'Ratings_distribution', 
     'Maximum_Rated_Movies', 'Movies_based_datecount', 'Top_10_Movies_Titles','PieChart_noof_movies_by_Year','Word_visualizations',
-    'Genres_of_2000s_movies','Statistical_BoxOffice_by_Years','Duration_distribuion','Differentiation_scatters', 
-    'Crew_movies_count','All Stories'])
+    'Genres_of_2000s_movies','Statistical_BoxOffice_by_Years','Duration_distribuion','Crew_movies_count','All Stories'])
 
     def Numberof_Movies_by_gcl():
         try:
@@ -483,7 +482,8 @@ def MDAV_options():
 
             st.info("""We have visualized Top most 10 movies based on **BoxOffice** data which consists of
             **Budget**, **Collections** and **Profit** and as well as We have visualized The Top 10 longest movies based on 
-            **Duration** and Popular movies based on **Popularity**. Please select the dropdown to visualize the visualizations""")
+            **Duration**, Popular movies based on **Popularity**, Voted movies based on **Votes**. Please select the dropdown 
+            to visualize the visualizations""")
             # For **WorldWide** as well as **USA** 
             # movies the longest duration movie was **Welcome to NewYork** with Duration **950** and for 
             # **Indian** movies the longest movie was **CzecMate: In Search of Jiri Menzel** with Duration 
@@ -493,7 +493,7 @@ def MDAV_options():
             # try selecting all the three attributes.
             story_select = st.selectbox(
             label = "Try all options",
-            options = ['Select','Budget', 'Collections', 'Profit', 'Duration', 'Popularity'])
+            options = ['Select','Budget', 'Collections', 'Profit', 'Duration', 'Popularity', 'Votes'])
 
             if story_select == "Budget":
                 df8 = pd.DataFrame(df['Budget'].sort_values(ascending = False))
@@ -546,11 +546,21 @@ def MDAV_options():
                 df_p = pd.DataFrame(df['Popularity'].sort_values(ascending = False))
                 df_p['Title'] = df['Title']
                 data = list(map(str,(df_p['Title'])))
-                #extract the top 10 longest duraton movies data from the list and dataframe.
+                #extract the top 10 popular movies data from the list and dataframe.
                 x = list(data[:10])
                 y = list(df_p['Popularity'][:10])
                 fig1 = go.Figure(data = go.Scatter(x=y, y=x, mode='lines+markers'))
                 fig1.update_layout(title='Top 10 Popular Movies')
+                st.plotly_chart(fig1)
+
+            if story_select == "Votes":
+                df_p = pd.DataFrame(df['Votes'].sort_values(ascending = False))
+                df_p['Title'] = df['Title']
+                data = list(map(str,(df_p['Title'])))
+                x = list(data[:10])
+                y = list(df_p['Votes'][:10])
+                fig1 = go.Figure(data = go.Scatter(x=y, y=x, mode='lines+markers'))
+                fig1.update_layout(title='Top 10 Voted Movies')
                 st.plotly_chart(fig1)
         except Exception as e:
             print(e)
@@ -700,6 +710,8 @@ def MDAV_options():
 
     def Duration_distribuion():
         try:
+            st.success("""**Data:** Rating, Duration, Year, IMDB ID, **Why: ** to show the duration data distribution over ratings data
+            so we selected Displot""")
             st.info("""We have visualized The **Duration** Mean Distribution for **Rating**. For **WorldWide** and **USA** movies the highest distribution occurs at
             **4.6** rating. For **Indian** movies the distribution occurs at **3.8** rating.""")
             data = df.groupby('Duration')['Rating'].mean().reset_index()
@@ -710,6 +722,8 @@ def MDAV_options():
             fig.update_layout(title_text='Mean Distribution of Duration and Rating')
             st.plotly_chart(fig)
 
+            st.success("""**Data:** Duration, IMDB ID, Year, **Why:** Compared values between groups so we selected 
+            **Bar plot**, groups: Duration, Comparision: Number of movies""")
             st.info("""These two visualizations states that the **count** of each **Duration** by using Slider. 
             Some of observations are for **WorldWide** and for **USA** movies the highest count of duration is 
             **90**. Whereas for **Indian** movies the highest duration count is **120**""")
@@ -720,73 +734,11 @@ def MDAV_options():
             df2 = df2[df2['Duration'] < slider_range_d[1]]
             df2 = df2.groupby("Duration").agg({"IMDB ID": pd.Series.nunique}).reset_index()
             df2.rename(columns = {'IMDB ID':'NumberofMovies'},inplace = True)
-            # data = df2["Duration"]
-
             fig8 = px.bar(df2, x = 'Duration', y = 'NumberofMovies', title = 'Number of movies by Duration')
             fig8.update_traces(textposition='outside')
             fig8.update_layout(uniformtext_minsize=8)
             st.plotly_chart(fig8)
 
-            fig3 = go.Figure(data=[go.Scatter(
-                x = df2.Duration,
-                y = df2["NumberofMovies"],
-                mode='markers',marker=dict(
-                color=['rgb(93, 164, 214)',  'rgb(44, 160, 101)', 'rgb(255, 65, 54)'])
-            )])
-            st.plotly_chart(fig3)
-
-        except Exception as e:
-            print(e)
-
-    def Differentiation_scatters():
-        try:
-            st.info("""We have visualized The scatter plots of 100 data for three attributes **Popularity, Duration and Votes**. 
-            In this visualization we can observe common scatters between three scatter plots. """)
-            df1 = df.head(100).copy()
-            trace1 =go.Scatter(
-                x =df1.index,
-                y = df1.Popularity,
-                mode ="lines",
-                name = " Popularity",
-                marker = dict(color = "rgb(242, 99, 74,0.7)"),
-                text = df1.Title
-            )
-            trace2 = go.Scatter(
-                x = df1.index,
-                y = df1.Duration,
-                mode = "lines + markers",
-                name = "Duration",
-                marker = dict( color = "rgb(144, 211, 74,0.5)"),
-                text = df1.Title
-            )
-            trace3 = go.Scatter(
-                x = df1.index,
-                y = df1.Votes,
-                mode = "markers",
-                name = "Votes",
-                marker = dict(color = "rgb(118, 144, 165)"),
-                text = df1.Title
-            )
-            data1 = [trace1]
-            layout = dict(
-                title = "Popularity"
-            )
-            fig = dict ( data = data1 , layout = layout)
-            st.plotly_chart(fig)
-
-            data2 = [trace2]
-            layout = dict(
-                title = "Duration"
-            )
-            fig1 = dict ( data = data2 , layout = layout)
-            st.plotly_chart(fig1)
-
-            data3 = [trace3]
-            layout = dict(
-                title = "Votes"
-            )
-            fig3 = dict ( data = data3 , layout = layout)
-            st.plotly_chart(fig3)
         except Exception as e:
             print(e)
 
@@ -912,9 +864,6 @@ def MDAV_options():
     if story_select == 'Duration_distribuion':
         Duration_distribuion()
 
-    if story_select == 'Differentiation_scatters':
-        Differentiation_scatters()
-
     if story_select == 'All Stories':
         Numberof_Movies_by_gcl()
         Year_vs_Movies()
@@ -928,7 +877,6 @@ def MDAV_options():
         Genres_of_2000s_movies()
         Statistical_BoxOffice_by_Years()
         Duration_distribuion()
-        Differentiation_scatters()
         Crew_movies_count()
 
 def Visualizations():
