@@ -245,10 +245,9 @@ def MDAV_options():
     story_select = st.sidebar.selectbox(
     label = "Select the story to visualise",
     options = ['Select','Numberof_Movies_by_gcl', 'Year_vs_Movies', 'Max_BoxOffice_Movies_each_Year', 'Ratings_distribution', 
-    'Maximum_Rated_Movies', 'Movies_based_datecount', 'Top_10_Movies_Titles', 'Crew_movies_count',
-    'movies_count_by_lang_Cn','Genre_vs_BoxOffice','PieChart_noof_movies_by_Year','Word_visualizations','Genres100_of_2000s_movies',
-     'Top10_longestandpopular_movies','Statistical_BoxOffice_by_Years','Duration_distribuion',
-    'BoxOffice_regression','Differentiation_scatters', 'All Stories'])
+    'Maximum_Rated_Movies', 'Movies_based_datecount', 'Top_10_Movies_Titles','PieChart_noof_movies_by_Year','Word_visualizations',
+    'Genres100_of_2000s_movies','Statistical_BoxOffice_by_Years','Duration_distribuion','Differentiation_scatters', 
+    'Crew_movies_count','All Stories'])
 
     def Numberof_Movies_by_gcl():
         try:
