@@ -347,7 +347,6 @@ def MDAV_options():
             slider_range_year = st.slider("Select the range of year", 1897, 2025 , (1990, 2024))
             df_s = df[df['Year'] > slider_range_year[0]]
             df_s = df_s[df_s['Year'] < slider_range_year[1]]
-            # data = df[df['Year']>1897]
             data=df_s.groupby('Year').count()['IMDB ID'].reset_index()
             data.rename(columns = {'IMDB ID':'Number Of Movies'},inplace = True)
             fig2 = px.line(data, x="Year", y="Number Of Movies", title='Year Vs Number Of Movies')
@@ -658,19 +657,22 @@ def MDAV_options():
 
     def Statistical_BoxOffice_by_Years():
         try:
-            st.info("""We have visualized The Boxoffice **Statistical** data which are **Mean, Standard Deviation and Maximum** implemented on
+            st.success("""**Data: **Budget, Collections, Profit, Year, **Why:** we are showing the relation between BoxOffice and Average BoxOffice
+            over years""")
+            st.info("""We have visualized The Boxoffice **Statistical** data which are **Mean and Maximum** implemented on
             **Budget, Collections, and Profit** for years **1900** to **2021**""")
             Boxoffice_select = st.selectbox(
             label = "Try all options",
-            options = ['Select', 'Mean', 'Maximum'])
-            data = df[df['Year']>1900]
-            data = data[data['Year'] <= 2021]
+            options = ['Select', 'Average', 'Highest'])
+            slider_range_box = st.slider("Select the range of year", 1900, 2021 , (1900, 2021))
+            data = df[df['Year']>slider_range_box[0]]
+            data = data[data['Year'] <= slider_range_box[1]]
             data = data.loc[data["Budget"] > 0]
             data = data.loc[data["Collections"] > 0]
             data = data.loc[data["Profit"] > 0]
-            if Boxoffice_select == "Mean" or "Select":
+            if Boxoffice_select == "Average":
                 data1 = data.groupby('Year').mean()['Budget'].reset_index()
-                fig1 = px.scatter(data1, x="Year", y="Budget", title='The Average Budget of years 1990-2021', color="Year")
+                fig1 = px.scatter(data1, x="Year", y="Budget", title='The Average Budget of years 1900-2021', color="Year")
                 st.plotly_chart(fig1)
 
                 data2 = data.groupby('Year').mean()['Collections'].reset_index()
@@ -681,7 +683,7 @@ def MDAV_options():
                 fig3 = px.scatter(data3, x="Year", y="Profit", title='The Average Profit for years 1900-2021', color="Year")
                 st.plotly_chart(fig3)
 
-            if Boxoffice_select == "Maximum":
+            if Boxoffice_select == "Highest":
                 data1 = data.groupby('Year').max()['Budget'].reset_index()
                 fig1 = px.scatter(data1, x="Year", y="Budget", title='The Maximum Budget of years 1990-2021', color="Year")
                 st.plotly_chart(fig1)
