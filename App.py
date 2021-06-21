@@ -244,26 +244,28 @@ def MDAV_options():
 
     story_select = st.sidebar.selectbox(
     label = "Select the story to visualise",
-    options = ['Select','Top_Geners_Movies', 'Year_vs_Movies', 'Max_BoxOffice_Movies_each_Year', 'Ratings_distribution', 
+    options = ['Select','Numberof_Movies_by_gcl', 'Year_vs_Movies', 'Max_BoxOffice_Movies_each_Year', 'Ratings_distribution', 
     'Maximum_Rated_Movies', 'Movies_based_datecount', 'Top_BoxOffice_Movies_Titles', 'Crew_movies_count',
     'movies_count_by_lang_Cn','Genre_vs_BoxOffice','PieChart_noof_movies_by_Year','Word_visualizations','Genres100_of_2000s_movies',
      'Top10_longestandpopular_movies','Statistical_BoxOffice_by_Years','Duration_distribuion',
     'BoxOffice_regression','Differentiation_scatters', 'All Stories'])
 
-    def Top_Geners_Movies():
+    def Numberof_Movies_by_gcl():
         try:
-            st.success("""**Data:** Year, Genre, **Why:** to show the change over time so we selected **linePlot**""")
-
-            st.info("""We have visualized Between **Year** and top **Genres** count from 1990 to 2021 According 
-            to the visualization for **WorldWide** movies the **Documentary** is more. Whereas for **Indian** movies 
-            **Drama** is more and for **USA** movies the **Documentary** and **Drama** are equally overlaped at each 
-            other point""")
-
+            
+            st.info("""We have visualized Between **Year** and **Genres**, **Country** and **Language** count from 1990 to 2021. please 
+            select the dropdown options to visualize graphs""")
             story_select_gcl = st.selectbox(
             label = "Try all options",
             options = ['Select','Genre', 'Country', 'Language'])
 
             if story_select_gcl == "Genre":
+                st.success("""**Data:** Year, Genre, **Why:** to show the change over time so we selected **linePlot**""")
+
+                st.info("""We have visualized Between **Year** and top **Genres** count from 1990 to 2021 According 
+                to the visualization for **WorldWide** movies the **Documentary** is more. Whereas for **Indian** movies 
+                **Drama** is more and for **USA** movies the **Documentary** and **Drama** are equally overlaped at each 
+                other point""")
                 slider_range_year = st.slider("Select the range of year", 1990, 2021 , (1990, 2021))
                 df_genres_sub = df[df['Year'] > slider_range_year[0]]
                 df_genres_sub = df_genres_sub[df_genres_sub['Year'] < slider_range_year[1]]
@@ -866,8 +868,8 @@ def MDAV_options():
         except Exception as e:
             print(e)
 
-    if story_select == 'Top_Geners_Movies':
-        Top_Geners_Movies()
+    if story_select == 'Numberof_Movies_by_gcl':
+        Numberof_Movies_by_gcl()
 
     if story_select == 'Year_vs_Movies':
         Year_vs_Movies()
@@ -912,7 +914,7 @@ def MDAV_options():
         Differentiation_scatters()
 
     if story_select == 'All Stories':
-        Top_Geners_Movies()
+        Numberof_Movies_by_gcl()
         Year_vs_Movies()
         Max_BoxOffice_Movies_each_Year()
         Ratings_distribution()
