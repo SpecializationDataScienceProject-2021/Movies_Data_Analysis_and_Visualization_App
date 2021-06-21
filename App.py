@@ -250,7 +250,6 @@ def MDAV_options():
 
     def Numberof_Movies_by_gcl():
         try:
-            
             st.info("""We have visualized Between **Year** and **Genres**, **Country** and **Language** count from 1990 to 2021. please 
             select the dropdown options to visualize graphs""")
             story_select_gcl = st.selectbox(
@@ -259,7 +258,6 @@ def MDAV_options():
 
             if story_select_gcl == "Genre":
                 st.success("""**Data:** Year, Genre, **Why:** to show the change over time so we selected **linePlot**""")
-
                 st.info("""We have visualized Between **Year** and top **Genres** count from 1990 to 2021 According 
                 to the visualization for **WorldWide** movies the **Documentary** is more. Whereas for **Indian** movies 
                 **Drama** is more and for **USA** movies the **Documentary** and **Drama** are equally overlaped at each 
@@ -744,6 +742,8 @@ def MDAV_options():
 
     def Crew_movies_count():
         try:
+            st.success("""**Data:** Actors, Director, **Why:** here we are showing group wise movies count group: Actors, Actress, Directors, 
+            Comparision: Number_of_movies""")
             st.info("""We have visualized The 20 known **Directors**, **Actors** and **Actress**, movies count 
             based on the frequency for **WorldWide** and **USA** movies data the highest movies director is **William Beaudine** and for 
             **Indian** movies data the highest movies director is **Narayana Rao Dasari**. For **WorldWide** and **Indian** movies data 
@@ -752,7 +752,7 @@ def MDAV_options():
             story_select = st.selectbox(
             label = "Try all options",
             options = ['Select', 'Actors', 'Actress', 'Director'])
-            if story_select == 'Actors' or 'Select':
+            if story_select == 'Actors':
                 data = df.loc[df["Actors"] != 'Actors Not Mentioned']
                 actors = []
                 for i in data['Actors']:
@@ -773,7 +773,8 @@ def MDAV_options():
                 df1 = df11.loc[df11['Actor'].isin(['Leonardo DiCaprio','John Carradine','Mickey Rooney','Vikram', 'Chiranjeevi','Nagarjuna Akkineni',
                 'Akshay Kumar','Amitabh Bachchan','Shah Rukh Khan','Venkatesh Daggubati','Nandamuri Balakrishna', 'Pawan Kalyan', 'Mahesh Babu','Nani', 
                 'Will Smith', 'Johnny Depp','Prabhas', 'Vijay Sethupathi', 'Dulquer Salmaan', 'Rajinikanth'])]
-                fig = px.line(df1, x="Actor", y="Number_of_Movies", title='Actors and their Movies Count') 
+                df_s = df1.sort_values('Number_of_Movies', ascending = False)
+                fig = px.bar(df_s, x="Actor", y="Number_of_Movies", title='Actors and their Movies Count') 
                 st.plotly_chart(fig)
             if story_select == 'Actress':
                 data = df.loc[df["Actors"] != 'Actors Not Mentioned']
@@ -797,7 +798,8 @@ def MDAV_options():
                 'Deepika Padukone', 'Raashi Khanna', 'Priyanka Chopra', 'Savitri', 'Jamuna', 'Simran', 'Payal Rajput', 'Katharine Hepburn', 'Shruti Haasan', 
                 'Nazriya Nazim', 'Margot Robbie', 'Samantha Akkineni', 'Hema Malini', 'Sridevi'])]
                 df2.rename(columns = {'Actor':'Actress'},inplace = True)
-                fig2 = px.line(df2, x="Actress", y="Number_of_Movies", title='Actress and their Movies Count')
+                df_acts = df2.sort_values('Number_of_Movies', ascending = False)
+                fig2 = px.bar(df_acts, x="Actress", y="Number_of_Movies", title='Actress and their Movies Count')
                 st.plotly_chart(fig2)
             if story_select == 'Director':
                 data = df.loc[df["Director"] != 'Director Not Mentioned']
@@ -820,7 +822,8 @@ def MDAV_options():
                 df1 = df11.loc[df11['Directors'].isin(['S.S. Rajamouli','Trivikram Srinivas','K. Raghavendra Rao','Bapu', 'Narayana Rao Dasari',
                 'Singeetham Srinivasa Rao','Jandhyala','Rohit Shetty','David Dhawan','Mahesh Bhatt','Sasikumar', 'Mani Ratnam', 'S. Shankar'
                 ,'Sathyan Anthikad', 'K.S. Sethumadhavan', 'T. Hariharan','Richard Thorpe', 'James Cameron', 'Louis Feuillade', 'William Beaudine'])]
-                fig = px.line(df1, x="Directors", y="Number_of_Movies", title='Director and their Movies Count')
+                df_dir = df1.sort_values('Number_of_Movies', ascending = False)
+                fig = px.bar(df_dir, x="Directors", y="Number_of_Movies", title='Director and their Movies Count')
                 st.plotly_chart(fig)    
         except Exception as e:
             print(e)
