@@ -374,6 +374,8 @@ def MDAV_options():
 
     def Maximum_Rated_Movies():
         try:
+            st.success("""**Data: ** Year, Rating, Title **Why: ** Compared values between groups so we selected 
+            **Bar plot**, groups: Year, Comparision: Rating""")
             st.info("""We have visualized the Maximum **Rating** movies in each year from **1900 to 2020**. 
             For this visualization we have included slider value. For **World Wide**, **Indian** and **USA** 
             movies we can observe so many **10** rated movies please adjust the slider to know more in detail""")
@@ -755,7 +757,7 @@ def MDAV_options():
             **Budget, Collections, and Profit** for years **1900** to **2021**""")
             Boxoffice_select = st.selectbox(
             label = "Try all options",
-            options = ['Select','Mean', 'Standard Deviation', 'Maximum'])
+            options = ['Select', 'Mean', 'Maximum'])
             data = df[df['Year']>1900]
             data = data[data['Year'] <= 2021]
             data = data.loc[data["Budget"] > 0]
@@ -772,19 +774,6 @@ def MDAV_options():
 
                 data3 = data.groupby('Year').mean()['Profit'].reset_index()
                 fig3 = px.scatter(data3, x="Year", y="Profit", title='The Average Profit for years 1900-2021', color="Year")
-                st.plotly_chart(fig3)
-
-            if Boxoffice_select == "Standard Deviation":
-                data1 = data.groupby('Year').std()['Budget'].reset_index()
-                fig1 = px.scatter(data1, x="Year", y="Budget", title='The Standard deviation for Budget of years 1990-2021', color="Year")
-                st.plotly_chart(fig1)
-
-                data2 = data.groupby('Year').std()['Collections'].reset_index()
-                fig2 = px.scatter(data2, x="Year", y="Collections", title='The Standard deviation of Collections for years 1900-2021', color="Year")
-                st.plotly_chart(fig2)
-
-                data3 = data.groupby('Year').std()['Profit'].reset_index()
-                fig3 = px.scatter(data3, x="Year", y="Profit", title='The Standard deviation for Profit for years 1900-2021', color="Year")
                 st.plotly_chart(fig3)
 
             if Boxoffice_select == "Maximum":
@@ -976,9 +965,6 @@ def MDAV_options():
     if story_select == 'Max_BoxOffice_Movies_each_Year':
         Max_BoxOffice_Movies_each_Year()
 
-    if story_select == 'Top_Genres_of_Movies':
-        Top_Genres_of_Movies()
-
     if story_select == 'Ratings_distribution':
         Ratings_distribution()
 
@@ -1034,7 +1020,6 @@ def MDAV_options():
         Top_Geners_Movies()
         Year_vs_Movies()
         Max_BoxOffice_Movies_each_Year()
-        Top_Genres_of_Movies()
         Ratings_distribution()
         Maximum_Rated_Movies()
         Movies_based_datecount()
