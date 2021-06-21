@@ -244,13 +244,13 @@ def MDAV_options():
 
     story_select = st.sidebar.selectbox(
     label = "Select the story to visualise",
-    options = ['Select','Top_10_geners', 'Year_vs_Movies', 'Max_BoxOffice_Movies_each_Year','Top_Genres_of_Movies', 
-    'Ratings_distribution', 'Maximum_Rated_Movies', 'Movies_based_datecount', 'Top10_BoxOffice_Movies', 'Crew_movies_count',
+    options = ['Select','Top_Geners_Movies', 'Year_vs_Movies', 'Max_BoxOffice_Movies_each_Year','Top_Genres_of_Movies', 
+    'Ratings_distribution', 'Maximum_Rated_Movies', 'Movies_based_datecount', 'Top_BoxOffice_Movies_Titles', 'Crew_movies_count',
     'Country_based_movies_count','Genre_vs_BoxOffice','PieChart_noof_movies_by_Year','Word_visualizations','Genres100_of_2000s_movies',
     'StripPlots_based_on_Year', 'Top10_longestandpopular_movies','Statistical_BoxOffice_by_Years','Duration_distribuion',
     'BoxOffice_regression','Differentiation_scatters','Scatter3D_plots', 'Language_based_movive_count', 'All Stories'])
 
-    def Top_10_geners():
+    def Top_Geners_Movies():
         try:
             st.success("""**Data:** Year, Genre
             **Why:** to show the change over time so we selected **linePlot**""")
@@ -424,24 +424,29 @@ def MDAV_options():
         except Exception as e:
             print(e)
 
-    def Top10_BoxOffice_Movies():
+    def Top_BoxOffice_Movies_Titles():
         try:
+            st.success("""**Data:** Budget, Title, Why: To show the differentiation of top 10 BoxOffice data
+            so we selected lines+marker graph""")
+
             st.info("""We have visualized Top most 10 movies based on **BoxOffice** data which consists of
             **Budget**, **Collections** and **Profit** the below table shows all the top 10 movies data 
             try selecting all the three attributes """)
-            story_select = st.selectbox(
+            story_select = st.sidebar.selectbox(
             label = "Try all options",
             options = ['Select','Budget', 'Collections', 'Profit'])
 
-            if story_select == "Budget" or "Select":
+            slider_range_b = st.slider("select the sidebar option for visualizations, please slide the slider to get to know top 10 movies", 0, 10 , (0, 10))
+            if story_select == "Budget" and "Select":
                 df8 = pd.DataFrame(df['Budget'].sort_values(ascending = False))
                 df8['Title'] = df['Title']
                 data = list(map(str,(df8['Title'])))
                 # extract the top 10 budget movies data from the list and dataframe.
-                x = list(data[1:11])
-                y = list(df8['Budget'][1:11])
+                x = list(data[slider_range_b[0]:slider_range_b[1]])
+                y = list(df8['Budget'][slider_range_b[0]:slider_range_b[1]])
                 #plot the figure and setup the title and labels.
                 fig = go.Figure(data = go.Scatter(x=y, y=x, mode='lines+markers'))
+                fig.update_layout(title='Budget based Top movies')
                 st.plotly_chart(fig)
 
             if story_select == "Collections":
@@ -449,10 +454,11 @@ def MDAV_options():
                 df8['Title'] = df['Title']
                 data = list(map(str,(df8['Title'])))
                 # extract the top 10 Collection movies data from the list and dataframe.
-                x = list(data[1:11])
-                y = list(df8['Collections'][1:11])
+                x = list(data[slider_range_b[0]:slider_range_b[1]])
+                y = list(df8['Collections'][slider_range_b[0]:slider_range_b[1]])
                 #plot the figure and setup the title and labels.
                 fig = go.Figure(data = go.Scatter(x=y, y=x, mode='lines+markers'))
+                fig.update_layout(title='Profit based Top movies')
                 st.plotly_chart(fig)
 
             if story_select == "Profit":
@@ -460,10 +466,11 @@ def MDAV_options():
                 df8['Title'] = df['Title']
                 data = list(map(str,(df8['Title'])))
                 # extract the top 10 Profit movies data from the list and dataframe.
-                x = list(data[1:11])
-                y = list(df8['Profit'][1:11])
+                x = list(data[slider_range_b[0]:slider_range_b[1]])
+                y = list(df8['Profit'][slider_range_b[0]:slider_range_b[1]])
                 #plot the figure and setup the title and labels.
                 fig = go.Figure(data = go.Scatter(x=y, y=x, mode='lines+markers'))
+                fig.update_layout(title='Profit based Top movies')
                 st.plotly_chart(fig)
         except Exception as e:
             print(e)
@@ -953,8 +960,8 @@ def MDAV_options():
         except Exception as e:
             print(e)
         
-    if story_select == 'Top_10_geners':
-        Top_10_geners()
+    if story_select == 'Top_Geners_Movies':
+        Top_Geners_Movies()
 
     if story_select == 'Year_vs_Movies':
         Year_vs_Movies()
@@ -974,8 +981,8 @@ def MDAV_options():
     if story_select == 'Movies_based_datecount':
         Movies_based_datecount()
 
-    if story_select == 'Top10_BoxOffice_Movies':
-        Top10_BoxOffice_Movies()
+    if story_select == 'Top_BoxOffice_Movies_Titles':
+        Top_BoxOffice_Movies_Titles()
 
     if story_select == 'Crew_movies_count':
         Crew_movies_count()
@@ -1017,14 +1024,14 @@ def MDAV_options():
         Language_based_movive_count()
 
     if story_select == 'All Stories':
-        Top_10_geners()
+        Top_Geners_Movies()
         Year_vs_Movies()
         Max_BoxOffice_Movies_each_Year()
         Top_Genres_of_Movies()
         Ratings_distribution()
         Maximum_Rated_Movies()
         Movies_based_datecount()
-        Top10_BoxOffice_Movies()
+        Top_BoxOffice_Movies_Titles()
         Crew_movies_count()
         Country_based_movies_count()
         Genre_vs_BoxOffice()
