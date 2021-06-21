@@ -259,39 +259,80 @@ def MDAV_options():
             **Drama** is more and for **USA** movies the **Documentary** and **Drama** are equally overlaped at each 
             other point""")
 
-            slider_range_year = st.slider("Select the range of year", 1990, 2021 , (1990, 2021))
-            df_genres_sub = df[df['Year'] > slider_range_year[0]]
-            df_genres_sub = df_genres_sub[df_genres_sub['Year'] < slider_range_year[1]]
+            story_select_gcl = st.selectbox(
+            label = "Try all options",
+            options = ['Select','Genre', 'Country', 'Language'])
 
-            df_series = (df_genres_sub.groupby(['Genre', 'Year']).size())
-            df_series = df_series.unstack(level=0)
-            df_series['sum'] = df_series.sum(axis = 1)
-            df_top_10 = df_series.loc[:, ['Drama', 'Comedy', 'Thriller', 'Romance', 'Action', 'Horror', 'Documentary', 'Biography', 'Adventure', 'Crime']]
-            df_top = df_top_10.reset_index()
-            df_top.head()
-            fig1 = px.line(df_top, 
-                x = 'Year', 
-                y = ['Drama', 'Comedy', 'Thriller', 'Romance', 'Action', 'Horror', 'Documentary', 'Biography', 'Adventure', 'Crime'], 
-                title = 'Count of the 10 most popular genres produced from 1990 to 2021')
-            st.plotly_chart(fig1)
+            if story_select_gcl == "Genre":
+                slider_range_year = st.slider("Select the range of year", 1990, 2021 , (1990, 2021))
+                df_genres_sub = df[df['Year'] > slider_range_year[0]]
+                df_genres_sub = df_genres_sub[df_genres_sub['Year'] < slider_range_year[1]]
 
-            st.success("""**Data:** Genre, Year, **Why: ** Compare values between groups so we selected 
-            **Bar plot**, groups: Genres, Comparision: Year """)
-            st.info("""We have visualized the top **Genres** of all **Years** from **1900 to 2021** and their count. For **Worldwide** 
-            and **Indian** movies its **Drama** whereas for **USA** its **Drama & Documentary**""")
-            df_genre = df[df['Genre'] != 'No Genre']
-            df_genre = df_genre[['Genre', 'Year']]
-            cnt = df_genre.groupby(['Genre']).count().reset_index()
-            cnt.rename(columns = {'Year':'Count'},inplace = True)
-            scnt = cnt.sort_values('Count', ascending = False)
-            df_count = scnt.head(10)
-            fig4 = px.bar(df_count, 
-                x = 'Count', 
-                y = 'Genre', 
-                orientation = 'h', 
-                width = 800, 
-                title = 'Top 10 Genres of Movies Produced from 1900 to 2021')
-            st.plotly_chart(fig4)
+                df_series = (df_genres_sub.groupby(['Genre', 'Year']).size())
+                df_series = df_series.unstack(level=0)
+                df_series['sum'] = df_series.sum(axis = 1)
+                df_top_10 = df_series.loc[:, ['Drama', 'Comedy', 'Thriller', 'Romance', 'Action', 'Horror', 'Documentary', 'Biography', 'Adventure', 'Crime']]
+                df_top = df_top_10.reset_index()
+                df_top.head()
+                fig1 = px.line(df_top, 
+                    x = 'Year', 
+                    y = ['Drama', 'Comedy', 'Thriller', 'Romance', 'Action', 'Horror', 'Documentary', 'Biography', 'Adventure', 'Crime'], 
+                    title = 'Count of the 10 most popular genres produced from 1990 to 2021')
+                st.plotly_chart(fig1)
+
+                st.success("""**Data:** Genre, Year, **Why: ** Compare values between groups so we selected 
+                **Bar plot**, groups: Genres, Comparision: Year """)
+                st.info("""We have visualized the top **Genres** of all **Years** from **1900 to 2021** and their count. For **Worldwide** 
+                and **Indian** movies its **Drama** whereas for **USA** its **Drama & Documentary**""")
+                df_genre = df[df['Genre'] != 'No Genre']
+                df_genre = df_genre[['Genre', 'Year']]
+                cnt = df_genre.groupby(['Genre']).count().reset_index()
+                cnt.rename(columns = {'Year':'Count'},inplace = True)
+                scnt = cnt.sort_values('Count', ascending = False)
+                df_count = scnt.head(10)
+                fig4 = px.bar(df_count, 
+                    x = 'Count', 
+                    y = 'Genre', 
+                    orientation = 'h', 
+                    width = 800, 
+                    title = 'Top 10 Genres of Movies Produced from 1900 to 2021')
+                st.plotly_chart(fig4)
+
+            if story_select_gcl == "Country":
+                st.success("""**Data:** Country, Title, **Why: ** Compare values between groups so we selected 
+                **Bar plot**, groups: Country, Comparision: Number of movies """)
+                st.info("""We have visualized The **Country** based count of movies According to the visualization the **Worldwide** movies 
+                were produced more by The country **USA** with count of **113.906K** and for **Indian** movies the count is **33.358K**""")
+                df_country_list = df['Country'].to_list()
+                s = ','.join(df_country_list)
+                listt = s.split(",")
+                freq = {} 
+                for item in listt: 
+                    if (item in freq): 
+                        freq[item] += 1
+                    else: 
+                        freq[item] = 1
+
+                df_actors_l_f = pd.DataFrame(list(freq.items()),columns = ['Country','No_of_movies'])
+                scnt = df_actors_l_f.sort_values(by=['No_of_movies'])
+                fig10 = px.bar(scnt.tail(30), x="Country", y="No_of_movies", title='Country Vs Number Of Movies', color="Country")
+                st.plotly_chart(fig10)
+
+            if story_select_gcl == "Language":
+                st.success("""**Data:** Language, IMDB ID, **Why: ** Compare values between groups so we selected 
+                **Bar plot**, groups: Language, Comparision: Number of movies """)
+                st.info("""We have visualized The known Languages based on the story **Word_visualizations**. In this The most released movies 
+                **Language** according to **WorldWide** and **USA** movies is **English**. Whereas for **Indian** movies is **Hindi**""")
+                df2 = df.groupby("Language").agg({"IMDB ID": pd.Series.nunique}).reset_index()
+                df2.rename(columns = {'IMDB ID':'Number of Movies'},inplace = True)
+                data = df2.drop([9], axis=0)
+                data = data.loc[data['Language'].isin(['Telugu','Hindi','English','Tamil', 'Kannada', 'Malayalam', 'Urdu', 'Spanish', 'French', 'Marathi', 'Japanese', 'German'])]
+                data1 = data[data["Number of Movies"] > 25]
+                fig8 = px.bar(data1, x = 'Language', y = 'Number of Movies', title = 'Number of movies by Language')
+                fig8.update_traces(textposition='outside')
+                fig8.update_layout(uniformtext_minsize=8)
+                st.plotly_chart(fig8)
+
         except Exception as e:
             print(e)
 
@@ -443,7 +484,7 @@ def MDAV_options():
             st.info("""We have visualized Top most 10 movies based on **BoxOffice** data which consists of
             **Budget**, **Collections** and **Profit** the below table shows all the top 10 movies data 
             try selecting all the three attributes """)
-            story_select = st.sidebar.selectbox(
+            story_select = st.selectbox(
             label = "Try all options",
             options = ['Select','Budget', 'Collections', 'Profit'])
 
@@ -483,122 +524,6 @@ def MDAV_options():
                 fig = go.Figure(data = go.Scatter(x=y, y=x, mode='lines+markers'))
                 fig.update_layout(title='Profit based Top movies')
                 st.plotly_chart(fig)
-        except Exception as e:
-            print(e)
-
-    def Crew_movies_count():
-        try:
-            st.info("""We have visualized The 20 known **Directors**, **Actors** and **Actress**, movies count 
-            based on the frequency for **WorldWide** and **USA** movies data the highest movies director is **William Beaudine** and for 
-            **Indian** movies data the highest movies director is **Narayana Rao Dasari**. For **WorldWide** and **Indian** movies data 
-            the highest movies actor is **Chiranjeevi** and actress is **Sridevi**, For **USA** movies the highest movie actor is 
-            **Mickey Rooney** and actress is **Katharine Hepburn**""")
-            story_select = st.selectbox(
-            label = "Try all options",
-            options = ['Select', 'Actors', 'Actress', 'Director'])
-            if story_select == 'Actors' or 'Select':
-                data = df.loc[df["Actors"] != 'Actors Not Mentioned']
-                actors = []
-                for i in data['Actors']:
-                    a = i.split(", ")
-                    for j in a:
-                        actors.append(j)
-
-                frequencies = {}
-                for item in actors:
-                    if item in frequencies:
-                        frequencies[item] += 1
-                    else:
-                        frequencies[item] = 1
-
-                df11 = pd.DataFrame()
-                df11["Actor"] = frequencies.keys()
-                df11["Number_of_Movies"] = frequencies.values()
-                df1 = df11.loc[df11['Actor'].isin(['Leonardo DiCaprio','John Carradine','Mickey Rooney','Vikram', 'Chiranjeevi','Nagarjuna Akkineni',
-                'Akshay Kumar','Amitabh Bachchan','Shah Rukh Khan','Venkatesh Daggubati','Nandamuri Balakrishna', 'Pawan Kalyan', 'Mahesh Babu','Nani', 
-                'Will Smith', 'Johnny Depp','Prabhas', 'Vijay Sethupathi', 'Dulquer Salmaan', 'Rajinikanth'])]
-                fig = px.line(df1, x="Actor", y="Number_of_Movies", title='Actors and their Movies Count') 
-                st.plotly_chart(fig)
-            if story_select == 'Actress':
-                data = df.loc[df["Actors"] != 'Actors Not Mentioned']
-                actors = []
-                for i in data['Actors']:
-                    a = i.split(", ")
-                    for j in a:
-                        actors.append(j)
-
-                frequencies = {}
-                for item in actors:
-                    if item in frequencies:
-                        frequencies[item] += 1
-                    else:
-                        frequencies[item] = 1
-
-                df11 = pd.DataFrame()
-                df11["Actor"] = frequencies.keys()
-                df11["Number_of_Movies"] = frequencies.values()
-                df2 = df11.loc[df11['Actor'].isin(['Kajal Aggarwal', 'Anushka Shetty', 'Tamannaah Bhatia', 'Nayanthara', 'Scarlett Johansson', 'Angelina Jolie', 
-                'Deepika Padukone', 'Raashi Khanna', 'Priyanka Chopra', 'Savitri', 'Jamuna', 'Simran', 'Payal Rajput', 'Katharine Hepburn', 'Shruti Haasan', 
-                'Nazriya Nazim', 'Margot Robbie', 'Samantha Akkineni', 'Hema Malini', 'Sridevi'])]
-                df2.rename(columns = {'Actor':'Actress'},inplace = True)
-                fig2 = px.line(df2, x="Actress", y="Number_of_Movies", title='Actress and their Movies Count')
-                st.plotly_chart(fig2)
-            if story_select == 'Director':
-                data = df.loc[df["Director"] != 'Director Not Mentioned']
-                actors = []
-                for i in data['Director']:
-                    a = i.split(", ")
-                    for j in a:
-                        actors.append(j)
-
-                frequencies = {}
-                for item in actors:
-                    if item in frequencies:
-                        frequencies[item] += 1
-                    else:
-                        frequencies[item] = 1
-
-                df11 = pd.DataFrame()
-                df11["Directors"] = frequencies.keys()
-                df11["Number_of_Movies"] = frequencies.values()
-                df1 = df11.loc[df11['Directors'].isin(['S.S. Rajamouli','Trivikram Srinivas','K. Raghavendra Rao','Bapu', 'Narayana Rao Dasari',
-                'Singeetham Srinivasa Rao','Jandhyala','Rohit Shetty','David Dhawan','Mahesh Bhatt','Sasikumar', 'Mani Ratnam', 'S. Shankar'
-                ,'Sathyan Anthikad', 'K.S. Sethumadhavan', 'T. Hariharan','Richard Thorpe', 'James Cameron', 'Louis Feuillade', 'William Beaudine'])]
-                fig = px.line(df1, x="Directors", y="Number_of_Movies", title='Director and their Movies Count')
-                st.plotly_chart(fig)    
-        except Exception as e:
-            print(e)
-
-    def movies_count_by_lang_Cn():
-        try:
-            st.info("""We have visualized The **Country** based count of movies According to the visualization the **Worldwide** movies 
-            were produced more by The country **USA** with count of **113.906K** and for **Indian** movies the count is **33.358K**""")
-            df_country_list = df['Country'].to_list()
-            s = ','.join(df_country_list)
-            listt = s.split(",")
-            freq = {} 
-            for item in listt: 
-                if (item in freq): 
-                    freq[item] += 1
-                else: 
-                    freq[item] = 1
-
-            df_actors_l_f = pd.DataFrame(list(freq.items()),columns = ['Country','No_of_movies'])
-            scnt = df_actors_l_f.sort_values(by=['No_of_movies'])
-            fig10 = px.bar(scnt.tail(30), x="Country", y="No_of_movies", title='Country Vs Number Of Movies', color="Country")
-            st.plotly_chart(fig10)
-
-            st.info("""We have visualized The known Languages based on the story **Word_visualizations**. In this The most released movies 
-            **Language** according to **WorldWide** and **USA** movies is **English**. Whereas for **Indian** movies is **Hindi**""")
-            df2 = df.groupby("Language").agg({"IMDB ID": pd.Series.nunique}).reset_index()
-            df2.rename(columns = {'IMDB ID':'Number of Movies'},inplace = True)
-            data = df2.drop([9], axis=0)
-            data = data.loc[data['Language'].isin(['Telugu','Hindi','English','Tamil', 'Kannada', 'Malayalam', 'Urdu', 'Spanish', 'French', 'Marathi', 'Japanese', 'German'])]
-            data1 = data[data["Number of Movies"] > 25]
-            fig8 = px.bar(data1, x = 'Language', y = 'Number of Movies', title = 'Number of movies by Language')
-            fig8.update_traces(textposition='outside')
-            fig8.update_layout(uniformtext_minsize=8)
-            st.plotly_chart(fig8)
         except Exception as e:
             print(e)
 
@@ -858,6 +783,89 @@ def MDAV_options():
         except Exception as e:
             print(e)
 
+    def Crew_movies_count():
+        try:
+            st.info("""We have visualized The 20 known **Directors**, **Actors** and **Actress**, movies count 
+            based on the frequency for **WorldWide** and **USA** movies data the highest movies director is **William Beaudine** and for 
+            **Indian** movies data the highest movies director is **Narayana Rao Dasari**. For **WorldWide** and **Indian** movies data 
+            the highest movies actor is **Chiranjeevi** and actress is **Sridevi**, For **USA** movies the highest movie actor is 
+            **Mickey Rooney** and actress is **Katharine Hepburn**""")
+            story_select = st.selectbox(
+            label = "Try all options",
+            options = ['Select', 'Actors', 'Actress', 'Director'])
+            if story_select == 'Actors' or 'Select':
+                data = df.loc[df["Actors"] != 'Actors Not Mentioned']
+                actors = []
+                for i in data['Actors']:
+                    a = i.split(", ")
+                    for j in a:
+                        actors.append(j)
+
+                frequencies = {}
+                for item in actors:
+                    if item in frequencies:
+                        frequencies[item] += 1
+                    else:
+                        frequencies[item] = 1
+
+                df11 = pd.DataFrame()
+                df11["Actor"] = frequencies.keys()
+                df11["Number_of_Movies"] = frequencies.values()
+                df1 = df11.loc[df11['Actor'].isin(['Leonardo DiCaprio','John Carradine','Mickey Rooney','Vikram', 'Chiranjeevi','Nagarjuna Akkineni',
+                'Akshay Kumar','Amitabh Bachchan','Shah Rukh Khan','Venkatesh Daggubati','Nandamuri Balakrishna', 'Pawan Kalyan', 'Mahesh Babu','Nani', 
+                'Will Smith', 'Johnny Depp','Prabhas', 'Vijay Sethupathi', 'Dulquer Salmaan', 'Rajinikanth'])]
+                fig = px.line(df1, x="Actor", y="Number_of_Movies", title='Actors and their Movies Count') 
+                st.plotly_chart(fig)
+            if story_select == 'Actress':
+                data = df.loc[df["Actors"] != 'Actors Not Mentioned']
+                actors = []
+                for i in data['Actors']:
+                    a = i.split(", ")
+                    for j in a:
+                        actors.append(j)
+
+                frequencies = {}
+                for item in actors:
+                    if item in frequencies:
+                        frequencies[item] += 1
+                    else:
+                        frequencies[item] = 1
+
+                df11 = pd.DataFrame()
+                df11["Actor"] = frequencies.keys()
+                df11["Number_of_Movies"] = frequencies.values()
+                df2 = df11.loc[df11['Actor'].isin(['Kajal Aggarwal', 'Anushka Shetty', 'Tamannaah Bhatia', 'Nayanthara', 'Scarlett Johansson', 'Angelina Jolie', 
+                'Deepika Padukone', 'Raashi Khanna', 'Priyanka Chopra', 'Savitri', 'Jamuna', 'Simran', 'Payal Rajput', 'Katharine Hepburn', 'Shruti Haasan', 
+                'Nazriya Nazim', 'Margot Robbie', 'Samantha Akkineni', 'Hema Malini', 'Sridevi'])]
+                df2.rename(columns = {'Actor':'Actress'},inplace = True)
+                fig2 = px.line(df2, x="Actress", y="Number_of_Movies", title='Actress and their Movies Count')
+                st.plotly_chart(fig2)
+            if story_select == 'Director':
+                data = df.loc[df["Director"] != 'Director Not Mentioned']
+                actors = []
+                for i in data['Director']:
+                    a = i.split(", ")
+                    for j in a:
+                        actors.append(j)
+
+                frequencies = {}
+                for item in actors:
+                    if item in frequencies:
+                        frequencies[item] += 1
+                    else:
+                        frequencies[item] = 1
+
+                df11 = pd.DataFrame()
+                df11["Directors"] = frequencies.keys()
+                df11["Number_of_Movies"] = frequencies.values()
+                df1 = df11.loc[df11['Directors'].isin(['S.S. Rajamouli','Trivikram Srinivas','K. Raghavendra Rao','Bapu', 'Narayana Rao Dasari',
+                'Singeetham Srinivasa Rao','Jandhyala','Rohit Shetty','David Dhawan','Mahesh Bhatt','Sasikumar', 'Mani Ratnam', 'S. Shankar'
+                ,'Sathyan Anthikad', 'K.S. Sethumadhavan', 'T. Hariharan','Richard Thorpe', 'James Cameron', 'Louis Feuillade', 'William Beaudine'])]
+                fig = px.line(df1, x="Directors", y="Number_of_Movies", title='Director and their Movies Count')
+                st.plotly_chart(fig)    
+        except Exception as e:
+            print(e)
+
     if story_select == 'Top_Geners_Movies':
         Top_Geners_Movies()
 
@@ -881,9 +889,6 @@ def MDAV_options():
 
     if story_select == 'Crew_movies_count':
         Crew_movies_count()
-
-    if story_select == 'movies_count_by_lang_Cn':
-        movies_count_by_lang_Cn()
 
     if story_select == 'PieChart_noof_movies_by_Year':
         PieChart_noof_movies_by_Year()
@@ -915,7 +920,6 @@ def MDAV_options():
         Movies_based_datecount()
         Top_BoxOffice_Movies_Titles()
         Crew_movies_count()
-        movies_count_by_lang_Cn()
         PieChart_noof_movies_by_Year()
         Word_visualizations()
         Genres100_of_2000s_movies()
