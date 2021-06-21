@@ -901,5 +901,5 @@ footer {visibility: hidden;}
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 st.sidebar.markdown('''
-<small>Created by [M.Lakshmi Madhuri, T.Phaneendhar, A.Akhil, A.Sailaja, A.Vamsi Krishna, Y.Swapnith]
-(https://github.com/Madhuri97/MoviesData_Analysis_Visualization_Team9).</small>''', unsafe_allow_html=True)
+<small>Created by [M.Lakshmi Madhuri ,A.Sailaja ,Y.Swapnith, T.Phaneendhar, A.Vamsi Krishna, A.Akhil]
+(https://github.com/SpecializationDataScienceProject-2021/Movies_Data_Analysis_and_Visualization_App).</small>''', unsafe_allow_html=True)
