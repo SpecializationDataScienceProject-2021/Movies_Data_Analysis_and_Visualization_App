@@ -246,7 +246,7 @@ def MDAV_options():
     label = "Select the story to visualise",
     options = ['Select','Numberof_Movies_by_gcl', 'Year_vs_Movies', 'Max_BoxOffice_Movies_each_Year', 'Ratings_distribution', 
     'Maximum_Rated_Movies', 'Movies_based_datecount', 'Top_10_Movies_Titles','PieChart_noof_movies_by_Year','Word_visualizations',
-    'Genres100_of_2000s_movies','Statistical_BoxOffice_by_Years','Duration_distribuion','Differentiation_scatters', 
+    'Genres_of_2000s_movies','Statistical_BoxOffice_by_Years','Duration_distribuion','Differentiation_scatters', 
     'Crew_movies_count','All Stories'])
 
     def Numberof_Movies_by_gcl():
@@ -630,8 +630,10 @@ def MDAV_options():
         except Exception as e:
             print(e)
 
-    def Genres100_of_2000s_movies():
+    def Genres_of_2000s_movies():
         try:
+            st.success("""**Data: ** Year, Title, Genre, **Why: ** Compared values between groups so we selected 
+            **Bar plot**, groups: Year, Genre Comparision: Number of movies""")
             st.info("""We have visualized the **Genres** and **Years** of **2000's**. In this classification for **Worldwide** and **USA** movies 
             we have more **Documentary** for all  2000s Years whereas for **Indian** movies we have **Drama** for all 2000s Yaers. To know more 
             please use slider.""")
@@ -899,8 +901,8 @@ def MDAV_options():
     if story_select == 'Word_visualizations':
         Word_visualizations()
 
-    if story_select == 'Genres100_of_2000s_movies':
-        Genres100_of_2000s_movies()
+    if story_select == 'Genres_of_2000s_movies':
+        Genres_of_2000s_movies()
 
     if story_select == 'Statistical_BoxOffice_by_Years':
         Statistical_BoxOffice_by_Years()
@@ -919,13 +921,13 @@ def MDAV_options():
         Maximum_Rated_Movies()
         Movies_based_datecount()
         Top_10_Movies_Titles()
-        Crew_movies_count()
         PieChart_noof_movies_by_Year()
         Word_visualizations()
-        Genres100_of_2000s_movies()
+        Genres_of_2000s_movies()
         Statistical_BoxOffice_by_Years()
         Duration_distribuion()
         Differentiation_scatters()
+        Crew_movies_count()
 
 def Visualizations():
     st.markdown("""### Visualizations of **Movies** data""")
