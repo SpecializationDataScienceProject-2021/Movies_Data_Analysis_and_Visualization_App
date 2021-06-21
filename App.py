@@ -297,18 +297,21 @@ def MDAV_options():
 
     def Max_BoxOffice_Movies_each_Year():
         try:
+            st.success("""**Data: ** Year, Collections, Budget, Profit, **Why: ** Compare values between groups so we selected 
+            **Bar plot**, groups: Year, Comparision: BoxOffice data""")
             st.info("""We have visualized the Maximum **BoxOffice** data in each year of 2000's based on three 
             attributes **Collections**, **Budget**, **Profit** the table below are some of the observations, The 
-            **WorldWide** and **USA** movies data are having similar visualizations compared to **Indian** movies data""")
+            **WorldWide** and **USA** movies data are having similar visualizations compared to **Indian** movies data.
+            please select boxOffice option from sidebar to visualize""")
             st.markdown('''|         |Year      |Collections|Year|Budget|Year|Profit| 
                         |-------- |----------|-----------|----|------|----|------|
                         |WorldWide|2009, 2019|15.2T      |2011|2.03T |2009|13.9T |
                         |Indian   |2017      |1.5T       |2018|412B  |2017|1.33T |
                         |USA      |2009, 2019|15.2T      |2019|1.91T |2009|13.9T |''')
-            story_select = st.selectbox(
+            story_select = st.sidebar.selectbox(
             label = "Try all options",
             options = ['Select','Collections', 'Budget', 'Profit'])
-            if story_select == "Collections" or "Select":
+            if story_select == "Collections":
                 small_df = df[['Title', 'Year', 'Collections']]
                 small_df = df[df['Year'] > 2000]
                 small_df = small_df[small_df['Year'] < 2021]
