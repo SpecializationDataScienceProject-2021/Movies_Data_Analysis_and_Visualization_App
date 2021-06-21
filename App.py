@@ -252,8 +252,7 @@ def MDAV_options():
 
     def Top_Geners_Movies():
         try:
-            st.success("""**Data:** Year, Genre
-            **Why:** to show the change over time so we selected **linePlot**""")
+            st.success("""**Data:** Year, Genre, **Why:** to show the change over time so we selected **linePlot**""")
 
             st.info("""We have visualized Between **Year** and top **Genres** count from 1990 to 2021 According 
             to the visualization for **WorldWide** movies the **Documentary** is more. Whereas for **Indian** movies 
@@ -280,11 +279,16 @@ def MDAV_options():
 
     def Year_vs_Movies():
         try:
+            st.success("""**Data:** Year, IMDB ID, **Why:** to show the change over time so we selected **linePlot**, comparision: number of movies and 
+            time: years""")
             st.info("""We have visualized Between **Year** wise **IMDB ID** count from 1897 to 2020 According to 
             the visualization of **WorldWide** movies, **Indian** movies and **USA** movies **2018** year movies 
             count is more""")
-            data = df[df['Year']>1897]
-            data=data.groupby('Year').count()['IMDB ID'].reset_index()
+            slider_range_year = st.slider("Select the range of year", 1897, 2025 , (1990, 2024))
+            df_s = df[df['Year'] > slider_range_year[0]]
+            df_s = df_s[df_s['Year'] < slider_range_year[1]]
+            # data = df[df['Year']>1897]
+            data=df_s.groupby('Year').count()['IMDB ID'].reset_index()
             data.rename(columns = {'IMDB ID':'Number Of Movies'},inplace = True)
             fig2 = px.line(data, x="Year", y="Number Of Movies", title='Year Vs Number Of Movies')
             st.plotly_chart(fig2)
