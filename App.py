@@ -245,7 +245,7 @@ def MDAV_options():
     story_select = st.sidebar.selectbox(
     label = "Select the story to visualise",
     options = ['Select','Numberof_Movies_by_gcl', 'Year_vs_Movies', 'Max_BoxOffice_Movies_each_Year', 'Ratings_distribution', 
-    'Maximum_Rated_Movies', 'Movies_based_datecount', 'Top_BoxOffice_Movies_Titles', 'Crew_movies_count',
+    'Maximum_Rated_Movies', 'Movies_based_datecount', 'Top_10_Movies_Titles', 'Crew_movies_count',
     'movies_count_by_lang_Cn','Genre_vs_BoxOffice','PieChart_noof_movies_by_Year','Word_visualizations','Genres100_of_2000s_movies',
      'Top10_longestandpopular_movies','Statistical_BoxOffice_by_Years','Duration_distribuion',
     'BoxOffice_regression','Differentiation_scatters', 'All Stories'])
@@ -478,26 +478,32 @@ def MDAV_options():
         except Exception as e:
             print(e)
 
-    def Top_BoxOffice_Movies_Titles():
+    def Top_10_Movies_Titles():
         try:
-            st.success("""**Data:** Budget, Title, Why: To show the differentiation of top 10 BoxOffice data
-            so we selected lines+marker graph""")
+            st.success("""**Data:** Budget, Title, Why: To show the differentiation of top 10 BoxOffice data as well as the longest popular
+            movies data so we selected lines+marker graph using scatter plot""")
 
             st.info("""We have visualized Top most 10 movies based on **BoxOffice** data which consists of
-            **Budget**, **Collections** and **Profit** the below table shows all the top 10 movies data 
-            try selecting all the three attributes """)
+            **Budget**, **Collections** and **Profit** and as well as We have visualized The Top 10 longest movies based on 
+            **Duration** and Popular movies based on **Popularity**. Please select the dropdown to visualize the visualizations""")
+            # For **WorldWide** as well as **USA** 
+            # movies the longest duration movie was **Welcome to NewYork** with Duration **950** and for 
+            # **Indian** movies the longest movie was **CzecMate: In Search of Jiri Menzel** with Duration 
+            # **426**. comming to **Popularity** for **WorldWide** and **USA** movies the popular movie was 
+            # **Tom Clancy's Without Remorse** with popularity count **4000K**. For **Indian** movies the 
+            # popular movie was **Drive** with popularity count **91K** the below table shows all the top 10 movies data 
+            # try selecting all the three attributes.
             story_select = st.selectbox(
             label = "Try all options",
-            options = ['Select','Budget', 'Collections', 'Profit'])
+            options = ['Select','Budget', 'Collections', 'Profit', 'Duration', 'Popularity'])
 
-            slider_range_b = st.slider("select the sidebar option for visualizations, please slide the slider to get to know top 10 movies", 0, 10 , (0, 10))
-            if story_select == "Budget" and "Select":
+            if story_select == "Budget":
                 df8 = pd.DataFrame(df['Budget'].sort_values(ascending = False))
                 df8['Title'] = df['Title']
                 data = list(map(str,(df8['Title'])))
                 # extract the top 10 budget movies data from the list and dataframe.
-                x = list(data[slider_range_b[0]:slider_range_b[1]])
-                y = list(df8['Budget'][slider_range_b[0]:slider_range_b[1]])
+                x = list(data[1:11])
+                y = list(df8['Budget'][1:11])
                 #plot the figure and setup the title and labels.
                 fig = go.Figure(data = go.Scatter(x=y, y=x, mode='lines+markers'))
                 fig.update_layout(title='Budget based Top movies')
@@ -508,8 +514,8 @@ def MDAV_options():
                 df8['Title'] = df['Title']
                 data = list(map(str,(df8['Title'])))
                 # extract the top 10 Collection movies data from the list and dataframe.
-                x = list(data[slider_range_b[0]:slider_range_b[1]])
-                y = list(df8['Collections'][slider_range_b[0]:slider_range_b[1]])
+                x = list(data[1:11])
+                y = list(df8['Collections'][1:11])
                 #plot the figure and setup the title and labels.
                 fig = go.Figure(data = go.Scatter(x=y, y=x, mode='lines+markers'))
                 fig.update_layout(title='Profit based Top movies')
@@ -520,17 +526,40 @@ def MDAV_options():
                 df8['Title'] = df['Title']
                 data = list(map(str,(df8['Title'])))
                 # extract the top 10 Profit movies data from the list and dataframe.
-                x = list(data[slider_range_b[0]:slider_range_b[1]])
-                y = list(df8['Profit'][slider_range_b[0]:slider_range_b[1]])
+                x = list(data[1:11])
+                y = list(df8['Profit'][1:11])
                 #plot the figure and setup the title and labels.
                 fig = go.Figure(data = go.Scatter(x=y, y=x, mode='lines+markers'))
                 fig.update_layout(title='Profit based Top movies')
                 st.plotly_chart(fig)
+
+            if story_select == "Duration":
+                df_d = pd.DataFrame(df['Duration'].sort_values(ascending = False))
+                df_d['Title'] = df['Title']
+                data = list(map(str,(df_d['Title'])))
+                #extract the top 10 longest duraton movies data from the list and dataframe.
+                x = list(data[:10])
+                y = list(df_d['Duration'][:10])
+                fig = go.Figure(data = go.Scatter(x=y, y=x, mode='lines+markers'))
+                fig.update_layout(title='Top 10 Longest Duration Movies')
+                st.plotly_chart(fig)
+
+            if story_select == "Popularity":
+                df_p = pd.DataFrame(df['Popularity'].sort_values(ascending = False))
+                df_p['Title'] = df['Title']
+                data = list(map(str,(df_p['Title'])))
+                #extract the top 10 longest duraton movies data from the list and dataframe.
+                x = list(data[:10])
+                y = list(df_p['Popularity'][:10])
+                fig1 = go.Figure(data = go.Scatter(x=y, y=x, mode='lines+markers'))
+                fig1.update_layout(title='Top 10 Popular Movies')
+                st.plotly_chart(fig1)
         except Exception as e:
             print(e)
 
     def PieChart_noof_movies_by_Year():
         try:
+            st.success("""**Data: ** Year, Title, **Why: ** to display the composition of categorical data category: Year""")
             st.info("""We have visualized The **Donut PieChart** between **Year** and **Title**. Here we have shown percentage of each year count of movies.
             Included the slider for selecting Years range. To know more please explore the slider""")
             slider_range = st.slider("Select the range to visualize", 1990, 2021 , (1990, 2021))
@@ -546,6 +575,8 @@ def MDAV_options():
 
     def Word_visualizations():
         try:
+            st.success("""**Data: ** Genre, Title, Language, Country, **Why: ** To show how frequently word appears in the given attributes
+            so we selected wordCloud """)
             st.info("""We have visualized The **WordCloud** for **Genres**, **Title** and **Language** to check the more reused 
             words from all the data according to the given attributes below table shows some of observation""")
             st.markdown('''|         |Genre               |Title                |Language|Country   | 
@@ -621,35 +652,6 @@ def MDAV_options():
                                     labels = dict(Year = 'year', number_of_movies = 'Number of movies')
                                     )
             st.plotly_chart(fig11)
-        except Exception as e:
-            print(e)
-
-    def Top10_longestandpopular_movies():
-        try:
-            st.info("""We have visualized The Top 10 longest movies based on **Duration** and Popular movies based on **Popularity**. 
-            For **WorldWide** as well as **USA** movies the longest duration movie was **Welcome to NewYork** with Duration **950** and for 
-            **Indian** movies the longest movie was **CzecMate: In Search of Jiri Menzel** with Duration **426**. comming to **Popularity** 
-            for **WorldWide** and **USA** movies the popular movie was **Tom Clancy's Without Remorse** with popularity count **4000K**. 
-            For **Indian** movies the popular movie was **Drive** with popularity count **91K**""")
-            df_d = pd.DataFrame(df['Duration'].sort_values(ascending = False))
-            df_d['Title'] = df['Title']
-            data = list(map(str,(df_d['Title'])))
-            #extract the top 10 longest duraton movies data from the list and dataframe.
-            x = list(data[:10])
-            y = list(df_d['Duration'][:10])
-            fig = go.Figure(data = go.Scatter(x=y, y=x, mode='lines+markers'))
-            fig.update_layout(title='Top 10 Longest Duration Movies')
-            st.plotly_chart(fig)
-
-            df_p = pd.DataFrame(df['Popularity'].sort_values(ascending = False))
-            df_p['Title'] = df['Title']
-            data = list(map(str,(df_p['Title'])))
-            #extract the top 10 longest duraton movies data from the list and dataframe.
-            x = list(data[:10])
-            y = list(df_p['Popularity'][:10])
-            fig1 = go.Figure(data = go.Scatter(x=y, y=x, mode='lines+markers'))
-            fig1.update_layout(title='Top 10 Popular Movies')
-            st.plotly_chart(fig1)
         except Exception as e:
             print(e)
 
@@ -886,8 +888,8 @@ def MDAV_options():
     if story_select == 'Movies_based_datecount':
         Movies_based_datecount()
 
-    if story_select == 'Top_BoxOffice_Movies_Titles':
-        Top_BoxOffice_Movies_Titles()
+    if story_select == 'Top_10_Movies_Titles':
+        Top_10_Movies_Titles()
 
     if story_select == 'Crew_movies_count':
         Crew_movies_count()
@@ -900,9 +902,6 @@ def MDAV_options():
 
     if story_select == 'Genres100_of_2000s_movies':
         Genres100_of_2000s_movies()
-
-    if story_select == 'Top10_longestandpopular_movies':
-        Top10_longestandpopular_movies()
 
     if story_select == 'Statistical_BoxOffice_by_Years':
         Statistical_BoxOffice_by_Years()
@@ -920,12 +919,11 @@ def MDAV_options():
         Ratings_distribution()
         Maximum_Rated_Movies()
         Movies_based_datecount()
-        Top_BoxOffice_Movies_Titles()
+        Top_10_Movies_Titles()
         Crew_movies_count()
         PieChart_noof_movies_by_Year()
         Word_visualizations()
         Genres100_of_2000s_movies()
-        Top10_longestandpopular_movies()
         Statistical_BoxOffice_by_Years()
         Duration_distribuion()
         Differentiation_scatters()
