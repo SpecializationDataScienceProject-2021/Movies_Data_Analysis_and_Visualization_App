@@ -246,9 +246,9 @@ def MDAV_options():
     label = "Select the story to visualise",
     options = ['Select','Top_Geners_Movies', 'Year_vs_Movies', 'Max_BoxOffice_Movies_each_Year', 'Ratings_distribution', 
     'Maximum_Rated_Movies', 'Movies_based_datecount', 'Top_BoxOffice_Movies_Titles', 'Crew_movies_count',
-    'Country_based_movies_count','Genre_vs_BoxOffice','PieChart_noof_movies_by_Year','Word_visualizations','Genres100_of_2000s_movies',
-    'StripPlots_based_on_Year', 'Top10_longestandpopular_movies','Statistical_BoxOffice_by_Years','Duration_distribuion',
-    'BoxOffice_regression','Differentiation_scatters','Scatter3D_plots', 'Language_based_movive_count', 'All Stories'])
+    'movies_count_by_lang_Cn','Genre_vs_BoxOffice','PieChart_noof_movies_by_Year','Word_visualizations','Genres100_of_2000s_movies',
+     'Top10_longestandpopular_movies','Statistical_BoxOffice_by_Years','Duration_distribuion',
+    'BoxOffice_regression','Differentiation_scatters', 'All Stories'])
 
     def Top_Geners_Movies():
         try:
@@ -320,13 +320,13 @@ def MDAV_options():
             st.info("""We have visualized the Maximum **BoxOffice** data in each year of 2000's based on three 
             attributes **Collections**, **Budget**, **Profit** the table below are some of the observations, The 
             **WorldWide** and **USA** movies data are having similar visualizations compared to **Indian** movies data.
-            please select boxOffice option from sidebar to visualize""")
+            please select boxOffice option from dropdown to visualize""")
             st.markdown('''|         |Year      |Collections|Year|Budget|Year|Profit| 
                         |-------- |----------|-----------|----|------|----|------|
                         |WorldWide|2009, 2019|15.2T      |2011|2.03T |2009|13.9T |
                         |Indian   |2017      |1.5T       |2018|412B  |2017|1.33T |
                         |USA      |2009, 2019|15.2T      |2019|1.91T |2009|13.9T |''')
-            story_select = st.sidebar.selectbox(
+            story_select = st.selectbox(
             label = "Try all options",
             options = ['Select','Collections', 'Budget', 'Profit'])
             if story_select == "Collections":
@@ -358,8 +358,8 @@ def MDAV_options():
 
     def Ratings_distribution():
         try:
-            st.success("""**Data: ** Rating, Title **Why: ** Compared values between groups so we selected 
-            **Bar plot**, groups: Rating, Comparision: Number of movies""")
+            st.success("""**Data: ** Rating, Title **Why: ** Distribution of numeric variable values as a series of bar so 
+            we selected **Histogram plot**, numeric variable: Rating""")
             st.info("""We have visualized the **Rating** of all movies and their count. For **Worldwide** the distribution 
             occurs at **6.4** with count **6802**. whereas for **Indian** movies the distribution occurs at **7.2** with count 
             of **466**. and for **USA** the distribution occurs at **6.4** with count **1982**""")
@@ -394,15 +394,17 @@ def MDAV_options():
 
     def Movies_based_datecount():
         try:
+            st.success("""**Data: ** Day, Weekday, Month, Year, IMDB ID **Why: ** Compared values between groups so we selected 
+            **Bar plot**, groups: Day, Weekday, Month, Comparision: Number of movies""")
             st.info("""We have visualized between the **Year** and the count of **Released Year** attributes like **Day wise**, 
             **WeekDay wise** and **Month wise**. The highest count for **WorldWide** movies the **date** is **1**, **Weekday** is 
             **Friday** and **Month name** is **October** Whereas, for **Indian** movies the **date** is **1**, **Weekday** is 
             **Friday** and **Month name** is **January** and for **USA** movies the **date** is **1**, **Weekday** is **Friday** and 
-            **Month name** is **October**""")
+            **Month name** is **October**,""")
             story_select = st.selectbox(
             label = "Try all options",
             options = ['Select','Date', 'Weekday', 'Month'])
-            if story_select == 'Date' or 'Select':
+            if story_select == 'Date':
                 df2 = df[df['Year'] > 1997]
                 df2 = df.loc[df["Day"] != 0]
                 df2 = df2.groupby("Day").agg({"IMDB ID": pd.Series.nunique}).reset_index()
@@ -567,7 +569,7 @@ def MDAV_options():
         except Exception as e:
             print(e)
 
-    def Country_based_movies_count():
+    def movies_count_by_lang_Cn():
         try:
             st.info("""We have visualized The **Country** based count of movies According to the visualization the **Worldwide** movies 
             were produced more by The country **USA** with count of **113.906K** and for **Indian** movies the count is **33.358K**""")
@@ -585,45 +587,18 @@ def MDAV_options():
             scnt = df_actors_l_f.sort_values(by=['No_of_movies'])
             fig10 = px.bar(scnt.tail(30), x="Country", y="No_of_movies", title='Country Vs Number Of Movies', color="Country")
             st.plotly_chart(fig10)
-        except Exception as e:
-            print(e)
 
-    def Genre_vs_BoxOffice():
-        try:
-            st.info("""We have visualized The **Genere** based **Boxoffice** data with three attributes **Budget**, **Collections** and **Profit**
-            below shown is the table of observations to know more about the genres please check all boxoffice options""")
-            st.markdown('''|         |Budget|Collections|Profit| 
-                        |---------|------|-----------|------|
-                        |WorldWide|1.01T |5.5T       |4.8T  |
-                        |Indian   |110B  |228B       |16B   |
-                        |USA      |1.07T |5.5T       |4.7T  |''')
-            story_select_b = st.selectbox(
-            label = "Try all options",
-            options = ['Select','BOBudget', 'BOCollections', 'BOProfit'])
-            df_genre = df[df['Year'] > 1900]
-            df_genre = df_genre[df_genre['Year'] <= 2021]
-            df_genre_india = pd.DataFrame()
-            if story_select_b == "BOBudget" or "Select":
-                df_genre_india['Genre'] = df_genre['Genre']
-                df_genre_india['Budget'] = df_genre['Budget']
-                df1 = df_genre_india.groupby('Genre')
-                mean_df = df1.mean().reset_index().sort_values(by = ['Budget'])
-                fig10 = px.bar(mean_df.tail(30), x="Budget", y="Genre", title='Genre Vs Budget', orientation = 'h', color="Budget")
-                st.plotly_chart(fig10)
-            if story_select_b == "BOCollections":
-                df_genre_india['Genre'] = df_genre['Genre']
-                df_genre_india['Collections'] = df_genre['Collections']
-                df1 = df_genre_india.groupby('Genre')
-                mean_df = df1.mean().reset_index().sort_values(by = ['Collections'])
-                fig10 = px.bar(mean_df.tail(30), x="Collections", y="Genre", title='Genre Vs Collections', orientation = 'h', color="Collections")
-                st.plotly_chart(fig10)
-            if story_select_b == "BOProfit":
-                df_genre_india['Genre'] = df_genre['Genre']
-                df_genre_india['Profit'] = df_genre['Profit']
-                df1 = df_genre_india.groupby('Genre')
-                mean_df = df1.mean().reset_index().sort_values(by = ['Profit'])
-                fig10 = px.bar(mean_df.tail(30), x="Profit", y="Genre", title='Genre Vs Profit', orientation = 'h', color="Profit")
-                st.plotly_chart(fig10)
+            st.info("""We have visualized The known Languages based on the story **Word_visualizations**. In this The most released movies 
+            **Language** according to **WorldWide** and **USA** movies is **English**. Whereas for **Indian** movies is **Hindi**""")
+            df2 = df.groupby("Language").agg({"IMDB ID": pd.Series.nunique}).reset_index()
+            df2.rename(columns = {'IMDB ID':'Number of Movies'},inplace = True)
+            data = df2.drop([9], axis=0)
+            data = data.loc[data['Language'].isin(['Telugu','Hindi','English','Tamil', 'Kannada', 'Malayalam', 'Urdu', 'Spanish', 'French', 'Marathi', 'Japanese', 'German'])]
+            data1 = data[data["Number of Movies"] > 25]
+            fig8 = px.bar(data1, x = 'Language', y = 'Number of Movies', title = 'Number of movies by Language')
+            fig8.update_traces(textposition='outside')
+            fig8.update_layout(uniformtext_minsize=8)
+            st.plotly_chart(fig8)
         except Exception as e:
             print(e)
 
@@ -831,20 +806,6 @@ def MDAV_options():
         except Exception as e:
             print(e)
 
-    def BoxOffice_regression():
-        try:
-            st.info("""We have visualized The Regression model which is Linear fit trendline shows the Ordinary Least Square model between **BoxOffice** 
-            attributes which are **Budget, Collections and Profit**. Minimizing the sum of the squares of the differences between the observed dependent 
-            variable in the given dataset""")
-            fig = px.scatter(df, x="Collections", y="Budget", trendline="ols", title = "Correlation between Collection and Budget", color="Year")
-            st.plotly_chart(fig)
-            fig1 = px.scatter(df, x="Collections", y="Profit", trendline="ols", title = "Correlation between Collection and Profit", color="Year")
-            st.plotly_chart(fig1)
-            fig2 = px.scatter(df, x="Budget", y="Profit", trendline="ols", title = "Correlation between Budget and Profit", color="Year")
-            st.plotly_chart(fig2)
-        except Exception as e:
-            print(e)
-
     def Differentiation_scatters():
         try:
             st.info("""We have visualized The scatter plots of 100 data for three attributes **Popularity, Duration and Votes**. 
@@ -897,65 +858,6 @@ def MDAV_options():
         except Exception as e:
             print(e)
 
-    def Scatter3D_plots():
-        try:
-            st.info("""We have visualized The 3D Scatter plot. First plot, is for **Title, Popularity and Rating** where **x** value is **Title**
-            **y** value is **Popularity** and **z** value is **Rating**. Second plot, is for **Budget, Collections and Profit** where **x** value
-            is **Budget**, **y** value is **Collections** and **z** value is **Profit**""")
-            df1 = df[df['Year'] <= 2021]
-            trace1=go.Scatter3d(
-            x =df1.Title.tail(100),
-            y = df1.Popularity.tail(100),
-            z= df1.Rating.tail(100),
-            mode = "markers",
-            marker= dict(
-                color= df1.Rating.tail(100),
-                colorscale = "Viridis",
-                size = 10))
-            data1 = [trace1]
-            layout = go.Layout(margin = dict (l=0, r=0, b=0, t=0))
-            st.write("3D plot for Title, Popularity and Rating")
-            fig = dict( data = data1, layout = layout)
-            st.plotly_chart(fig)
-            
-            df2 = df[df['Year'] <= 2021]
-            df2 = df2.loc[df2["Budget"] > 0]
-            df2 = df2.loc[df2["Collections"] > 0]
-            df2 = df2.loc[df2["Profit"] > 0]
-            trace1=go.Scatter3d(
-            x =df2.Budget,
-            y = df2.Collections,
-            z= df2.Profit,
-            mode = "markers",
-            marker= dict(
-                color= df2.Year,
-                colorscale = "Viridis",
-                size = 10))
-            data1 = [trace1]
-            layout = go.Layout(margin = dict (l=0, r=0, b=0, t=0))
-            fig1 = dict( data = data1, layout = layout)
-            st.write("3D plot for Budget, Collections and Profit")
-            st.plotly_chart(fig1)
-
-        except Exception as e:
-            print(e)
-
-    def Language_based_movive_count():
-        try:
-            st.info("""We have visualized The known Languages based on the story **Word_visualizations**. In this The most released movies 
-            **Language** according to **WorldWide** and **USA** movies is **English**. Whereas for **Indian** movies is **Hindi**""")
-            df2 = df.groupby("Language").agg({"IMDB ID": pd.Series.nunique}).reset_index()
-            df2.rename(columns = {'IMDB ID':'Number of Movies'},inplace = True)
-            data = df2.drop([9], axis=0)
-            data = data.loc[data['Language'].isin(['Telugu','Hindi','English','Tamil', 'Kannada', 'Malayalam', 'Urdu', 'Spanish', 'French', 'Marathi', 'Japanese', 'German'])]
-            data1 = data[data["Number of Movies"] > 25]
-            fig8 = px.bar(data1, x = 'Language', y = 'Number of Movies', title = 'Number of movies by Language')
-            fig8.update_traces(textposition='outside')
-            fig8.update_layout(uniformtext_minsize=8)
-            st.plotly_chart(fig8)
-        except Exception as e:
-            print(e)
-        
     if story_select == 'Top_Geners_Movies':
         Top_Geners_Movies()
 
@@ -980,11 +882,8 @@ def MDAV_options():
     if story_select == 'Crew_movies_count':
         Crew_movies_count()
 
-    if story_select == 'Country_based_movies_count':
-        Country_based_movies_count()
-
-    if story_select == 'Genre_vs_BoxOffice':
-        Genre_vs_BoxOffice()
+    if story_select == 'movies_count_by_lang_Cn':
+        movies_count_by_lang_Cn()
 
     if story_select == 'PieChart_noof_movies_by_Year':
         PieChart_noof_movies_by_Year()
@@ -1004,17 +903,8 @@ def MDAV_options():
     if story_select == 'Duration_distribuion':
         Duration_distribuion()
 
-    if story_select == 'BoxOffice_regression':
-        BoxOffice_regression()
-
     if story_select == 'Differentiation_scatters':
         Differentiation_scatters()
-
-    if story_select == 'Scatter3D_plots':
-        Scatter3D_plots()
-
-    if story_select == 'Language_based_movive_count':
-        Language_based_movive_count()
 
     if story_select == 'All Stories':
         Top_Geners_Movies()
@@ -1025,18 +915,14 @@ def MDAV_options():
         Movies_based_datecount()
         Top_BoxOffice_Movies_Titles()
         Crew_movies_count()
-        Country_based_movies_count()
-        Genre_vs_BoxOffice()
+        movies_count_by_lang_Cn()
         PieChart_noof_movies_by_Year()
         Word_visualizations()
         Genres100_of_2000s_movies()
         Top10_longestandpopular_movies()
         Statistical_BoxOffice_by_Years()
         Duration_distribuion()
-        BoxOffice_regression()
         Differentiation_scatters()
-        Scatter3D_plots()
-        Language_based_movive_count()
 
 def Visualizations():
     st.markdown("""### Visualizations of **Movies** data""")
