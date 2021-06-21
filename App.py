@@ -244,8 +244,8 @@ def MDAV_options():
 
     story_select = st.sidebar.selectbox(
     label = "Select the story to visualise",
-    options = ['Select','Top_Geners_Movies', 'Year_vs_Movies', 'Max_BoxOffice_Movies_each_Year','Top_Genres_of_Movies', 
-    'Ratings_distribution', 'Maximum_Rated_Movies', 'Movies_based_datecount', 'Top_BoxOffice_Movies_Titles', 'Crew_movies_count',
+    options = ['Select','Top_Geners_Movies', 'Year_vs_Movies', 'Max_BoxOffice_Movies_each_Year', 'Ratings_distribution', 
+    'Maximum_Rated_Movies', 'Movies_based_datecount', 'Top_BoxOffice_Movies_Titles', 'Crew_movies_count',
     'Country_based_movies_count','Genre_vs_BoxOffice','PieChart_noof_movies_by_Year','Word_visualizations','Genres100_of_2000s_movies',
     'StripPlots_based_on_Year', 'Top10_longestandpopular_movies','Statistical_BoxOffice_by_Years','Duration_distribuion',
     'BoxOffice_regression','Differentiation_scatters','Scatter3D_plots', 'Language_based_movive_count', 'All Stories'])
@@ -274,6 +274,24 @@ def MDAV_options():
                 y = ['Drama', 'Comedy', 'Thriller', 'Romance', 'Action', 'Horror', 'Documentary', 'Biography', 'Adventure', 'Crime'], 
                 title = 'Count of the 10 most popular genres produced from 1990 to 2021')
             st.plotly_chart(fig1)
+
+            st.success("""**Data:** Genre, Year, **Why: ** Compare values between groups so we selected 
+            **Bar plot**, groups: Genres, Comparision: Year """)
+            st.info("""We have visualized the top **Genres** of all **Years** from **1900 to 2021** and their count. For **Worldwide** 
+            and **Indian** movies its **Drama** whereas for **USA** its **Drama & Documentary**""")
+            df_genre = df[df['Genre'] != 'No Genre']
+            df_genre = df_genre[['Genre', 'Year']]
+            cnt = df_genre.groupby(['Genre']).count().reset_index()
+            cnt.rename(columns = {'Year':'Count'},inplace = True)
+            scnt = cnt.sort_values('Count', ascending = False)
+            df_count = scnt.head(10)
+            fig4 = px.bar(df_count, 
+                x = 'Count', 
+                y = 'Genre', 
+                orientation = 'h', 
+                width = 800, 
+                title = 'Top 10 Genres of Movies Produced from 1900 to 2021')
+            st.plotly_chart(fig4)
         except Exception as e:
             print(e)
 
@@ -335,26 +353,6 @@ def MDAV_options():
                 df2 = df1.groupby('Year').apply(lambda x: x[x['Profit'] == x['Profit'].max()])
                 fig3 = px.bar(df2, x = 'Year', y = 'Profit', text = 'Title', title ='Maximum Profits of movie in each Year')
                 st.plotly_chart(fig3)
-        except Exception as e:
-            print(e)
-
-    def Top_Genres_of_Movies():
-        try:
-            st.info("""We have visualized the top **Genres** of all **Years** from **1900 to 2021** and their count. For **Worldwide** 
-            and **Indian** movies its **Drama** whereas for **USA** its **Drama & Documentary**""")
-            df_genre = df[df['Genre'] != 'No Genre']
-            df_genre = df_genre[['Genre', 'Year']]
-            cnt = df_genre.groupby(['Genre']).count().reset_index()
-            cnt.rename(columns = {'Year':'Count'},inplace = True)
-            scnt = cnt.sort_values('Count', ascending = False)
-            df_count = scnt.head(10)
-            fig4 = px.bar(df_count, 
-                x = 'Count', 
-                y = 'Genre', 
-                orientation = 'h', 
-                width = 800, 
-                title = 'Top 10 Genres of Movies Produced from 1900 to 2021')
-            st.plotly_chart(fig4)
         except Exception as e:
             print(e)
 
