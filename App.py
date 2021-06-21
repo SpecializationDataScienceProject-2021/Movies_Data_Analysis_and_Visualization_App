@@ -244,13 +244,14 @@ def MDAV_options():
 
     story_select = st.sidebar.selectbox(
     label = "Select the story to visualise",
-    options = ['Select','Numberof_Movies_by_gcl', 'Year_vs_Movies', 'Max_BoxOffice_Movies_each_Year', 'Ratings_distribution', 
+    options = ['Select','All Stories', 'Numberof_Movies_by_gcl', 'Year_vs_Movies', 'Max_BoxOffice_Movies_each_Year', 'Ratings_distribution', 
     'Maximum_Rated_Movies', 'Movies_based_datecount', 'Top_10_Movies_Titles','PieChart_noof_movies_by_Year','Word_visualizations',
-    'Genres_of_2000s_movies','Statistical_BoxOffice_by_Years','Duration_distribuion','Crew_movies_count','All Stories'])
+    'Genres_of_2000s_movies','Statistical_BoxOffice_by_Years','Duration_distribuion','Crew_movies_count'])
 
     def Numberof_Movies_by_gcl():
         try:
-            st.info("""We have visualized Between **Year** and **Genres**, **Country** and **Language** count from 1990 to 2021. please 
+            st.subheader("Number_of_movies_by_gcl")
+            st.info("""Visualized Between **Year** and **Genres**, **Country** and **Language** count from 1990 to 2021. please 
             select the dropdown options to visualize graphs""")
             story_select_gcl = st.selectbox(
             label = "Try all options",
@@ -258,7 +259,7 @@ def MDAV_options():
 
             if story_select_gcl == "Genre":
                 st.success("""**Data:** Year, Genre, **Why:** to show the change over time so we selected **linePlot**""")
-                st.info("""We have visualized Between **Year** and top **Genres** count from 1990 to 2021 According 
+                st.info("""Visualized Between **Year** and top **Genres** count from 1990 to 2021 According 
                 to the visualization for **WorldWide** movies the **Documentary** is more. Whereas for **Indian** movies 
                 **Drama** is more and for **USA** movies the **Documentary** and **Drama** are equally overlaped at each 
                 other point""")
@@ -336,9 +337,10 @@ def MDAV_options():
 
     def Year_vs_Movies():
         try:
+            st.subheader("Year_vs_Movies")
             st.success("""**Data:** Year, IMDB ID, **Why:** to show the change over time so we selected **linePlot**, comparision: number of movies and 
             time: years""")
-            st.info("""We have visualized Between **Year** wise **IMDB ID** count from 1897 to 2020 According to 
+            st.info("""Visualized Between **Year** wise **IMDB ID** count from 1897 to 2020 According to 
             the visualization of **WorldWide** movies, **Indian** movies and **USA** movies **2018** year movies 
             count is more""")
             slider_range_year = st.slider("Select the range of year", 1897, 2025 , (1990, 2024))
@@ -353,9 +355,10 @@ def MDAV_options():
 
     def Max_BoxOffice_Movies_each_Year():
         try:
+            st.subheader("Max_BoxOffice_Movies_each_Year")
             st.success("""**Data: ** Year, Collections, Budget, Profit, **Why: ** Compare values between groups so we selected 
             **Bar plot**, groups: Year, Comparision: BoxOffice data""")
-            st.info("""We have visualized the Maximum **BoxOffice** data in each year of 2000's based on three 
+            st.info("""Visualized the Maximum **BoxOffice** data in each year of 2000's based on three 
             attributes **Collections**, **Budget**, **Profit** the table below are some of the observations, The 
             **WorldWide** and **USA** movies data are having similar visualizations compared to **Indian** movies data.
             please select boxOffice option from dropdown to visualize""")
@@ -396,9 +399,10 @@ def MDAV_options():
 
     def Ratings_distribution():
         try:
+            st.subheader("Ratings_distribution")
             st.success("""**Data: ** Rating, Title **Why: ** Distribution of numeric variable values as a series of bar so 
             we selected **Histogram plot**, numeric variable: Rating""")
-            st.info("""We have visualized the **Rating** of all movies and their count. For **Worldwide** the distribution 
+            st.info("""Visualized the **Rating** of all movies and their count. For **Worldwide** the distribution 
             occurs at **6.4** with count **6802**. whereas for **Indian** movies the distribution occurs at **7.2** with count 
             of **466**. and for **USA** the distribution occurs at **6.4** with count **1982**""")
             cnt = df.groupby(['Rating'])['Title'].count().reset_index()
@@ -412,6 +416,7 @@ def MDAV_options():
 
     def Maximum_Rated_Movies():
         try:
+            st.subheader("Maximum_Rated_Movies")
             st.success("""**Data: ** Year, Rating, Title **Why: ** Compared values between groups so we selected 
             **Bar plot**, groups: Year, Comparision: Rating""")
             st.info("""We have visualized the Maximum **Rating** movies in each year from **1900 to 2020**. 
@@ -432,13 +437,14 @@ def MDAV_options():
 
     def Movies_based_datecount():
         try:
+            st.subheader("Movies_based_datecount")
             st.success("""**Data: ** Day, Weekday, Month, Year, IMDB ID **Why: ** Compared values between groups so we selected 
             **Bar plot**, groups: Day, Weekday, Month, Comparision: Number of movies""")
             st.info("""We have visualized between the **Year** and the count of **Released Year** attributes like **Day wise**, 
             **WeekDay wise** and **Month wise**. The highest count for **WorldWide** movies the **date** is **1**, **Weekday** is 
             **Friday** and **Month name** is **October** Whereas, for **Indian** movies the **date** is **1**, **Weekday** is 
             **Friday** and **Month name** is **January** and for **USA** movies the **date** is **1**, **Weekday** is **Friday** and 
-            **Month name** is **October**,""")
+            **Month name** is **October**, please explore the dropdown for visualizations""")
             story_select = st.selectbox(
             label = "Try all options",
             options = ['Select','Date', 'Weekday', 'Month'])
@@ -475,20 +481,14 @@ def MDAV_options():
 
     def Top_10_Movies_Titles():
         try:
+            st.subheader("Top_10_Movies_Titles")
             st.success("""**Data:** Budget, Title, Why: To show the differentiation of top 10 BoxOffice data as well as the longest popular
             movies data so we selected lines+marker graph using scatter plot""")
 
             st.info("""We have visualized Top most 10 movies based on **BoxOffice** data which consists of
             **Budget**, **Collections** and **Profit** and as well as We have visualized The Top 10 longest movies based on 
             **Duration**, Popular movies based on **Popularity**, Voted movies based on **Votes**. Please select the dropdown 
-            to visualize the visualizations""")
-            # For **WorldWide** as well as **USA** 
-            # movies the longest duration movie was **Welcome to NewYork** with Duration **950** and for 
-            # **Indian** movies the longest movie was **CzecMate: In Search of Jiri Menzel** with Duration 
-            # **426**. comming to **Popularity** for **WorldWide** and **USA** movies the popular movie was 
-            # **Tom Clancy's Without Remorse** with popularity count **4000K**. For **Indian** movies the 
-            # popular movie was **Drive** with popularity count **91K** the below table shows all the top 10 movies data 
-            # try selecting all the three attributes.
+            to spectate the visualizations""")
             story_select = st.selectbox(
             label = "Try all options",
             options = ['Select','Budget', 'Collections', 'Profit', 'Duration', 'Popularity', 'Votes'])
@@ -500,7 +500,6 @@ def MDAV_options():
                 # extract the top 10 budget movies data from the list and dataframe.
                 x = list(data[1:11])
                 y = list(df8['Budget'][1:11])
-                #plot the figure and setup the title and labels.
                 fig = go.Figure(data = go.Scatter(x=y, y=x, mode='lines+markers'))
                 fig.update_layout(title='Budget based Top movies')
                 st.plotly_chart(fig)
@@ -512,7 +511,6 @@ def MDAV_options():
                 # extract the top 10 Collection movies data from the list and dataframe.
                 x = list(data[1:11])
                 y = list(df8['Collections'][1:11])
-                #plot the figure and setup the title and labels.
                 fig = go.Figure(data = go.Scatter(x=y, y=x, mode='lines+markers'))
                 fig.update_layout(title='Profit based Top movies')
                 st.plotly_chart(fig)
@@ -524,7 +522,6 @@ def MDAV_options():
                 # extract the top 10 Profit movies data from the list and dataframe.
                 x = list(data[1:11])
                 y = list(df8['Profit'][1:11])
-                #plot the figure and setup the title and labels.
                 fig = go.Figure(data = go.Scatter(x=y, y=x, mode='lines+markers'))
                 fig.update_layout(title='Profit based Top movies')
                 st.plotly_chart(fig)
@@ -565,6 +562,7 @@ def MDAV_options():
 
     def PieChart_noof_movies_by_Year():
         try:
+            st.subheader("PieChart_noof_movies_by_Year")
             st.success("""**Data: ** Year, Title, **Why: ** to display the composition of categorical data category: Year""")
             st.info("""We have visualized The **Donut PieChart** between **Year** and **Title**. Here we have shown percentage of each year count of movies.
             Included the slider for selecting Years range. To know more please explore the slider""")
@@ -581,10 +579,11 @@ def MDAV_options():
 
     def Word_visualizations():
         try:
+            st.subheader("Word_visualizations")
             st.success("""**Data: ** Genre, Title, Language, Country, **Why: ** To show how frequently word appears in the given attributes
             so we selected wordCloud """)
             st.info("""We have visualized The **WordCloud** for **Genres**, **Title** and **Language** to check the more reused 
-            words from all the data according to the given attributes below table shows some of observation""")
+            words from all the data according to the given attributes below table shows some of observation. please explore the dropdown for visualizations""")
             st.markdown('''|         |Genre               |Title                |Language|Country   | 
                         |---------|--------------------|---------------------|--------|----------|
                         |WorldWide|Drama, Comedy       |Love, Life, de, Man  |English |USA, Japan|
@@ -593,7 +592,7 @@ def MDAV_options():
             story_select = st.selectbox(
             label = "Try all options",
             options = ['Select', 'Genre', 'Title', 'Language', 'Country'])
-            if story_select == "Genre" or "Select":
+            if story_select == "Genre":
                 st.set_option('deprecation.showPyplotGlobalUse', False)
                 if option == "Worldwide":
                     wordcloudimage = Image.open('WordCloud/wordcloud_genre_world.jpg')
@@ -639,6 +638,7 @@ def MDAV_options():
 
     def Genres_of_2000s_movies():
         try:
+            st.subheader("Genres_of_2000s_movies")
             st.success("""**Data: ** Year, Title, Genre, **Why: ** Compared values between groups so we selected 
             **Bar plot**, groups: Year, Genre Comparision: Number of movies""")
             st.info("""We have visualized the **Genres** and **Years** of **2000's**. In this classification for **Worldwide** and **USA** movies 
@@ -665,10 +665,11 @@ def MDAV_options():
 
     def Statistical_BoxOffice_by_Years():
         try:
+            st.subheader("Statistical_BoxOffice_by_Years")
             st.success("""**Data: **Budget, Collections, Profit, Year, **Why:** we are showing the relation between BoxOffice and Average BoxOffice
             over years""")
             st.info("""We have visualized The Boxoffice **Statistical** data which are **Mean and Maximum** implemented on
-            **Budget, Collections, and Profit** for years **1900** to **2021**""")
+            **Budget, Collections, and Profit** for years **1900** to **2021**. please explore the dropdown and slider for visualizations""")
             Boxoffice_select = st.selectbox(
             label = "Try all options",
             options = ['Select', 'Average', 'Highest'])
@@ -708,6 +709,7 @@ def MDAV_options():
 
     def Duration_distribuion():
         try:
+            st.subheader("Duration_distribuion")
             st.success("""**Data:** Rating, Duration, Year, IMDB ID, **Why: ** to show the duration data distribution over ratings data
             so we selected Displot""")
             st.info("""We have visualized The **Duration** Mean Distribution for **Rating**. For **WorldWide** and **USA** movies the highest distribution occurs at
@@ -742,13 +744,14 @@ def MDAV_options():
 
     def Crew_movies_count():
         try:
+            st.subheader("Crew_movies_count")
             st.success("""**Data:** Actors, Director, **Why:** here we are showing group wise movies count group: Actors, Actress, Directors, 
             Comparision: Number_of_movies""")
             st.info("""We have visualized The 20 known **Directors**, **Actors** and **Actress**, movies count 
             based on the frequency for **WorldWide** and **USA** movies data the highest movies director is **William Beaudine** and for 
             **Indian** movies data the highest movies director is **Narayana Rao Dasari**. For **WorldWide** and **Indian** movies data 
             the highest movies actor is **Chiranjeevi** and actress is **Sridevi**, For **USA** movies the highest movie actor is 
-            **Mickey Rooney** and actress is **Katharine Hepburn**""")
+            **Mickey Rooney** and actress is **Katharine Hepburn**. please explore the dropdown for visualizations""")
             story_select = st.selectbox(
             label = "Try all options",
             options = ['Select', 'Actors', 'Actress', 'Director'])
@@ -849,9 +852,6 @@ def MDAV_options():
     if story_select == 'Top_10_Movies_Titles':
         Top_10_Movies_Titles()
 
-    if story_select == 'Crew_movies_count':
-        Crew_movies_count()
-
     if story_select == 'PieChart_noof_movies_by_Year':
         PieChart_noof_movies_by_Year()
 
@@ -866,6 +866,9 @@ def MDAV_options():
 
     if story_select == 'Duration_distribuion':
         Duration_distribuion()
+
+    if story_select == 'Crew_movies_count':
+        Crew_movies_count()
 
     if story_select == 'All Stories':
         Numberof_Movies_by_gcl()
