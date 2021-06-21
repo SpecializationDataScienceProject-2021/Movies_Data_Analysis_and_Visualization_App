@@ -358,6 +358,8 @@ def MDAV_options():
 
     def Ratings_distribution():
         try:
+            st.success("""**Data: ** Rating, Title **Why: ** Compared values between groups so we selected 
+            **Bar plot**, groups: Rating, Comparision: Number of movies""")
             st.info("""We have visualized the **Rating** of all movies and their count. For **Worldwide** the distribution 
             occurs at **6.4** with count **6802**. whereas for **Indian** movies the distribution occurs at **7.2** with count 
             of **466**. and for **USA** the distribution occurs at **6.4** with count **1982**""")
