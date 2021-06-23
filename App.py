@@ -36,7 +36,7 @@ st.set_option('deprecation.showfileUploaderEncoding', False)
 with header:
     st.title('Movies Data Analysis and Visualization')
 st.markdown("""In this App we spectate **Movies** data for **Analysis** and **Visualization** to get started click on left top corner **">"** symbol.""")
-st.markdown('''* **Python libraries:**streamlit, pandas, numpy, matplotlib, wordcloud, requests, plotly, Image and pyautogui.''')
+st.markdown('''* **Python libraries:**pandas, numpy, Beautiful Soup, Selenium, Gzip, plotly, matplotlib, requests, streamlit, and Image.''')
 st.markdown('''* **Data source:** [IMDB](https://datasets.imdbws.com/), [OMDB](https://www.omdbapi.com/), [TMDB](https://developers.themoviedb.org/3/movies/get-movie-details), [BoxOffice Mojo](https://www.boxofficemojo.com/year/world/)''')
 
 with image_d:
@@ -251,7 +251,7 @@ def MDAV_options():
     def Numberof_Movies_by_gcl():
         try:
             st.subheader("Number_of_movies_by_gcl")
-            st.info("""Visualized Between **Year** and **Genres**, **Country** and **Language** count from 1990 to 2021. please 
+            st.info("""Visualized Between **Year** and **Genres**, **Country**, **Language** count from 1990 to 2021. please 
             select the dropdown options to visualize graphs""")
             story_select_gcl = st.selectbox(
             label = "Try all options",
@@ -419,8 +419,8 @@ def MDAV_options():
             st.subheader("Maximum_Rated_Movies")
             st.success("""**Data: ** Year, Rating, Title **Why: ** Compared values between groups so we selected 
             **Bar plot**, groups: Year, Comparision: Rating""")
-            st.info("""We have visualized the Maximum **Rating** movies in each year from **1900 to 2020**. 
-            For this visualization we have included slider value. For **World Wide**, **Indian** and **USA** 
+            st.info("""Visualized the Maximum **Rating** movies in each year from **1900 to 2020**. 
+            For this visualization I have included slider value. For **World Wide**, **Indian** and **USA** 
             movies we can observe so many **10** rated movies please adjust the slider to know more in detail""")
             slider_range_mam = st.slider("Select the range to visualize", 1900, 2020 , (1900, 2020))
             small_df = df[['Title', 'Year', 'Rating']]
@@ -440,7 +440,7 @@ def MDAV_options():
             st.subheader("Movies_based_datecount")
             st.success("""**Data: ** Day, Weekday, Month, Year, IMDB ID **Why: ** Compared values between groups so we selected 
             **Bar plot**, groups: Day, Weekday, Month, Comparision: Number of movies""")
-            st.info("""We have visualized between the **Year** and the count of **Released Year** attributes like **Day wise**, 
+            st.info("""Visualized between the **Year** and the count of **Released Year** attributes like **Day wise**, 
             **WeekDay wise** and **Month wise**. The highest count for **WorldWide** movies the **date** is **1**, **Weekday** is 
             **Friday** and **Month name** is **October** Whereas, for **Indian** movies the **date** is **1**, **Weekday** is 
             **Friday** and **Month name** is **January** and for **USA** movies the **date** is **1**, **Weekday** is **Friday** and 
@@ -483,12 +483,12 @@ def MDAV_options():
         try:
             st.subheader("Top_10_Movies_Titles")
             st.success("""**Data:** Budget, Title, Why: To show the differentiation of top 10 BoxOffice data as well as the longest popular
-            movies data so we selected lines+marker graph using scatter plot""")
+            movies data so we selected **lines+marker** graph using **scatter plot**""")
 
-            st.info("""We have visualized Top most 10 movies based on **BoxOffice** data which consists of
-            **Budget**, **Collections** and **Profit** and as well as We have visualized The Top 10 longest movies based on 
-            **Duration**, Popular movies based on **Popularity**, Voted movies based on **Votes**. Please select the dropdown 
-            to spectate the visualizations""")
+            st.info("""The story itself is to display the top 10 movies so we Visualized Top most 10 movies based on **BoxOffice** 
+            data which consists of **Budget**, **Collections** and **Profit** and as well as We have visualized The Top 10 longest
+            movies based on **Duration**, Popular movies based on **Popularity**, Voted movies based on **Votes**. Please select the 
+            dropdown to spectate the visualizations""")
             story_select = st.selectbox(
             label = "Try all options",
             options = ['Select','Budget', 'Collections', 'Profit', 'Duration', 'Popularity', 'Votes'])
@@ -563,8 +563,9 @@ def MDAV_options():
     def PieChart_noof_movies_by_Year():
         try:
             st.subheader("PieChart_noof_movies_by_Year")
-            st.success("""**Data: ** Year, Title, **Why: ** to display the composition of categorical data category: Year""")
-            st.info("""We have visualized The **Donut PieChart** between **Year** and **Title**. Here we have shown percentage of each year count of movies.
+            st.success("""**Data: ** Year, Title, **Why: ** to display the composition of categorical data category: Year so, we selected the **PieChart**
+            for representation.""")
+            st.info("""Visualized The **Donut PieChart** between **Year** and **Title**. Here we have shown percentage of each year count of movies.
             Included the slider for selecting Years range. To know more please explore the slider""")
             slider_range = st.slider("Select the range to visualize", 1990, 2021 , (1990, 2021))
             movies_countries_df = df[df['Year'] > slider_range[0]]
@@ -581,8 +582,8 @@ def MDAV_options():
         try:
             st.subheader("Word_visualizations")
             st.success("""**Data: ** Genre, Title, Language, Country, **Why: ** To show how frequently word appears in the given attributes
-            so we selected wordCloud """)
-            st.info("""We have visualized The **WordCloud** for **Genres**, **Title** and **Language** to check the more reused 
+            so we selected **wordCloud** """)
+            st.info("""Visualized The **WordCloud** for **Genres**, **Title** and **Language** to check the more reused 
             words from all the data according to the given attributes below table shows some of observation. please explore the dropdown for visualizations""")
             st.markdown('''|         |Genre               |Title                |Language|Country   | 
                         |---------|--------------------|---------------------|--------|----------|
@@ -594,43 +595,112 @@ def MDAV_options():
             options = ['Select', 'Genre', 'Title', 'Language', 'Country'])
             if story_select == "Genre":
                 st.set_option('deprecation.showPyplotGlobalUse', False)
+                # df1 = df.astype({"Genre": str})
+                # genreslist = df1['Genre'].to_list()
+                # newgenreslist = []
+                # for i in genreslist:
+                #     if i != 'No Genre':
+                #         newgenreslist.append(i)                
+
+                # plt.subplots(figsize = (20, 10))
+                # wordcloud = WordCloud(background_color='white', width = 2000, height = 900).generate(" ".join(newgenreslist))
+                # plt.imshow(wordcloud)
+                # plt.axis('off')
                 if option == "Worldwide":
+                    # plt.savefig('WordCloud/wordcloud_genre_world.jpg')
+                    # plt.show()
                     wordcloudimage = Image.open('WordCloud/wordcloud_genre_world.jpg')
                     st.image(wordcloudimage)
                 elif option == "Indian":
+                    # plt.savefig('WordCloud/wordcloud_genre_indian.jpg')
+                    # plt.show()
                     wordcloudimage = Image.open('WordCloud/wordcloud_genre_indian.jpg')
                     st.image(wordcloudimage)
                 else:
+                    # plt.savefig('WordCloud/wordcloud_genre_usa.jpg')
+                    # plt.show()
                     wordcloudimage = Image.open('WordCloud/wordcloud_genre_usa.jpg')
                     st.image(wordcloudimage)
             if story_select == "Title":
+                # st.set_option('deprecation.showPyplotGlobalUse', False)
+                # df1 = df.astype({"Title": str})
+                # genreslist = df1['Title'].to_list()
+                # newgenreslist = []
+                # for i in genreslist:
+                #     if i != 'No Title':
+                #         newgenreslist.append(i)                
+
+                # plt.subplots(figsize=(20, 10))
+                # wordcloud = WordCloud(background_color='white', width = 2000, height = 900).generate(" ".join(newgenreslist))
+                # plt.imshow(wordcloud)
+                # plt.axis('off')
                 if option == "Worldwide":
+                    # plt.savefig('WordCloud/wordcloud_title_world.jpg')
+                    # plt.show()
                     wordcloudimage = Image.open('WordCloud/wordcloud_title_world.jpg')
                     st.image(wordcloudimage)
                 elif option == "Indian":
+                    # plt.savefig('WordCloud/wordcloud_title_indian.jpg')
+                    # plt.show()
                     wordcloudimage = Image.open('WordCloud/wordcloud_title_indian.jpg')
                     st.image(wordcloudimage)
                 else:
+                    # plt.savefig('WordCloud/wordcloud_title_usa.jpg')
+                    # plt.show()
                     wordcloudimage = Image.open('WordCloud/wordcloud_title_usa.jpg')
                     st.image(wordcloudimage)
             if story_select == "Language":
+                # df1 = df.astype({"Language": str})
+                # genreslist = df1['Language'].to_list()
+                # newgenreslist = []
+                # for i in genreslist:
+                #     if i != 'No Language':
+                #         newgenreslist.append(i)                
+
+                # plt.subplots(figsize = (20, 10))
+                # wordcloud = WordCloud(background_color = 'white', width = 2000, height = 900).generate(" ".join(newgenreslist))
+                # plt.imshow(wordcloud)
+                # plt.axis('off')
                 if option == "Worldwide":
+                    # plt.savefig('WordCloud/wordcloud_lang_world.jpg')
+                    # plt.show()
                     wordcloudimage = Image.open('WordCloud/wordcloud_lang_world.jpg')
                     st.image(wordcloudimage)
                 elif option == "Indian":
+                    # plt.savefig('WordCloud/wordcloud_lang_indian.jpg')
+                    # plt.show()
                     wordcloudimage = Image.open('WordCloud/wordcloud_lang_indian.jpg')
                     st.image(wordcloudimage)
                 else:
+                    # plt.savefig('WordCloud/wordcloud_lang_usa.jpg')
+                    # plt.show()
                     wordcloudimage = Image.open('WordCloud/wordcloud_lang_usa.jpg')
                     st.image(wordcloudimage)
             if story_select == "Country":
+                # df1 = df.astype({"Country": str})
+                # genreslist = df1['Country'].to_list()
+                # newgenreslist = []
+                # for i in genreslist:
+                #     if i != 'No Country':
+                #         newgenreslist.append(i)                
+
+                # plt.subplots(figsize = (20, 10))
+                # wordcloud = WordCloud(background_color = 'white', width = 2000, height = 900).generate(" ".join(newgenreslist))
+                # plt.imshow(wordcloud)
+                # plt.axis('off')
                 if option == "Worldwide":
+                    # plt.savefig('WordCloud/wordcloud_country_world.jpg')
+                    # plt.show()
                     wordcloudimage = Image.open('WordCloud/wordcloud_country_world.jpg')
                     st.image(wordcloudimage)
                 elif option == "Indian":
+                    # plt.savefig('WordCloud/wordcloud_country_indian.jpg')
+                    # plt.show()
                     wordcloudimage = Image.open('WordCloud/wordcloud_country_indian.jpg')
                     st.image(wordcloudimage)
                 else:
+                    # plt.savefig('WordCloud/wordcloud_country_usa.jpg')
+                    # plt.show()
                     wordcloudimage = Image.open('WordCloud/wordcloud_country_usa.jpg')
                     st.image(wordcloudimage)
         except Exception as e:
@@ -641,7 +711,7 @@ def MDAV_options():
             st.subheader("Genres_of_2000s_movies")
             st.success("""**Data: ** Year, Title, Genre, **Why: ** Compared values between groups so we selected 
             **Bar plot**, groups: Year, Genre Comparision: Number of movies""")
-            st.info("""We have visualized the **Genres** and **Years** of **2000's**. In this classification for **Worldwide** and **USA** movies 
+            st.info("""Visualized the **Genres** and **Years** of **2000's**. In this classification for **Worldwide** and **USA** movies 
             we have more **Documentary** for all  2000s Years whereas for **Indian** movies we have **Drama** for all 2000s Yaers. To know more 
             please use slider.""")
             slider_range = st.slider("Select the range to visualize", 2000, 2021 , (2000, 2021))
@@ -667,8 +737,8 @@ def MDAV_options():
         try:
             st.subheader("Statistical_BoxOffice_by_Years")
             st.success("""**Data: **Budget, Collections, Profit, Year, **Why:** we are showing the relation between BoxOffice and Average BoxOffice
-            over years""")
-            st.info("""We have visualized The Boxoffice **Statistical** data which are **Mean and Maximum** implemented on
+            over years. so this is represented using **Scatter Plot**""")
+            st.info("""Visualized The Boxoffice **Statistical** data which are **Mean and Maximum** implemented on
             **Budget, Collections, and Profit** for years **1900** to **2021**. please explore the dropdown and slider for visualizations""")
             Boxoffice_select = st.selectbox(
             label = "Try all options",
@@ -711,8 +781,8 @@ def MDAV_options():
         try:
             st.subheader("Duration_distribuion")
             st.success("""**Data:** Rating, Duration, Year, IMDB ID, **Why: ** to show the duration data distribution over ratings data
-            so we selected Displot""")
-            st.info("""We have visualized The **Duration** Mean Distribution for **Rating**. For **WorldWide** and **USA** movies the highest distribution occurs at
+            so we selected **Displot**""")
+            st.info("""Visualized The **Duration** Mean Distribution for **Rating**. For **WorldWide** and **USA** movies the highest distribution occurs at
             **4.6** rating. For **Indian** movies the distribution occurs at **3.8** rating.""")
             data = df.groupby('Duration')['Rating'].mean().reset_index()
             x = data["Rating"]
@@ -746,8 +816,8 @@ def MDAV_options():
         try:
             st.subheader("Crew_movies_count")
             st.success("""**Data:** Actors, Director, **Why:** here we are showing group wise movies count group: Actors, Actress, Directors, 
-            Comparision: Number_of_movies""")
-            st.info("""We have visualized The 20 known **Directors**, **Actors** and **Actress**, movies count 
+            Comparision: Number_of_movies. The representation is done using **Bar plot**""")
+            st.info("""Visualized The 20 known **Directors**, **Actors** and **Actress**, movies count 
             based on the frequency for **WorldWide** and **USA** movies data the highest movies director is **William Beaudine** and for 
             **Indian** movies data the highest movies director is **Narayana Rao Dasari**. For **WorldWide** and **Indian** movies data 
             the highest movies actor is **Chiranjeevi** and actress is **Sridevi**, For **USA** movies the highest movie actor is 
