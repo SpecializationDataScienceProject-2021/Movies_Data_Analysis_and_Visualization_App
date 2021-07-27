@@ -970,6 +970,6 @@ footer {visibility: hidden;}
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-# st.sidebar.markdown('''
-# <small>Created by [M.Lakshmi Madhuri ,T.Phaneendhar, A.Sailaja, Y.Swapnith, A.Vamsi Krishna, A.Akhil]
-# (https://github.com/SpecializationDataScienceProject-2021/Movies_Data_Analysis_and_Visualization_App).</small>''', unsafe_allow_html=True)
+st.sidebar.markdown('''
+<small>Created by [M.Lakshmi Madhuri ,T.Phaneendhar, A.Sailaja, Y.Swapnith, A.Vamsi Krishna, A.Akhil]
+(https://github.com/SpecializationDataScienceProject-2021/Movies_Data_Analysis_and_Visualization_App).</small>''', unsafe_allow_html=True)
